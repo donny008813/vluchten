@@ -10,6 +10,20 @@ columns = ["Airport ID", "Name", "City", "Country", "IATA", "ICAO", "Latitude", 
            "Timezone", "DST", "Tz database time zone", "Type", "Source"]
 airports = pd.read_csv(url, header=None, names=columns)
 
+# Hard-coded mapping of continents to countries (simplified list)
+continent_country_map = {
+    'Africa': ['Algeria', 'Nigeria', 'South Africa', 'Egypt', 'Kenya', 'Morocco', 'Ethiopia'],
+    'Asia': ['China', 'India', 'Japan', 'South Korea', 'Thailand', 'Indonesia', 'Saudi Arabia'],
+    'Europe': ['France', 'Germany', 'United Kingdom', 'Italy', 'Spain', 'Poland', 'Sweden'],
+    'North America': ['United States', 'Canada', 'Mexico', 'Cuba', 'Panama', 'Honduras'],
+    'South America': ['Brazil', 'Argentina', 'Colombia', 'Chile', 'Peru', 'Venezuela'],
+    'Oceania': ['Australia', 'New Zealand', 'Fiji', 'Papua New Guinea', 'Samoa']
+}
+
+# Function to get countries by continent
+def get_countries_by_continent(continent):
+    return continent_country_map.get(continent, [])
+
 # Streamlit dropdown for continent selection
 continents = ['Africa', 'Asia', 'Europe', 'North America', 'South America', 'Oceania']
 selected_continent = st.selectbox("Select a Continent", continents)
