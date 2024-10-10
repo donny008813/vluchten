@@ -60,7 +60,6 @@ st.pyplot(fig1)
 # Hist vertraagd dag
 fig2, ax2 = plt.subplots()
 # Plot de vertragingen per dag
-plt.figure(figsize=(10, 6))
 sns.countplot(data=vluchten_copy, x='dag', hue='vertraagd')
 # Labels en titel
 ax2.set_title('Count of Delays and Non-Delays per Day')
@@ -72,7 +71,6 @@ st.pyplot(fig2)
 # Hist vertraagd maand
 fig3, ax3 = plt.subplots()
 # Plot de vertragingen per maand
-plt.figure(figsize=(10,6))
 sns.countplot(data=vluchten_copy, x='maand', hue='vertraagd')
 # Labels en titel
 ax3.set_title('Count of Delays and Non-Delays per Month')
