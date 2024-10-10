@@ -2,14 +2,13 @@ import streamlit as st
 import time
 import numpy as np
 
-st.set_page_config(page_title="Plotting Demo", page_icon="📈")
+st.set_page_config(page_title="Vergelijking van opstijgen en landen")
 
-st.markdown("# Plotting Demo")
-st.sidebar.header("Plotting Demo")
+st.markdown("# Opstijgen en landen")
+st.sidebar.header("Opstijgen en landen")
 st.write(
-    """This demo illustrates a combination of plotting and animation with
-Streamlit. We're generating a bunch of random numbers in a loop for around
-5 seconds. Enjoy!"""
+    """In deze grafiek zullen van verschillende vluchten het opsteigen en landen getoond worden.
+    Hierin is voor elke vlucht de hoogte en de tijd te zien."""
 )
 
 progress_bar = st.sidebar.progress(0)
