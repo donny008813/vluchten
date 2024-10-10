@@ -95,6 +95,7 @@ arriving_flights_per_day = arriving_flights.groupby('Date').size()
 departing_flights_per_day_per_airline = departing_flights.groupby(['Date', 'Airline_Full_Name']).size().unstack(fill_value=0)
 arriving_flights_per_day_per_airline = arriving_flights.groupby(['Date', 'Airline_Full_Name']).size().unstack(fill_value=0)
 most_used_arrival_airports = arriving_flights.groupby(['Airline_Full_Name', 'Org/Des']).size().unstack(fill_value=0)
+average_departing_flights_per_hour = departing_flights.groupby(['Hour', 'Airline_Full_Name']).size().unstack(fill_value=0).mean(axis=1)
  
 # Streamlit app
 st.title('Flight Schedule Analysis')
@@ -117,3 +118,6 @@ st.line_chart(arriving_flights_per_day_per_airline)
  
 st.subheader('Most Used Arrival Airports Per Airline')
 st.write(most_used_arrival_airports)
+
+st.subheader('Average departing flights per hour')
+st.write(average_departing_flights_per_hour)
