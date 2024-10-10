@@ -76,6 +76,6 @@ sns.countplot(data=vluchten_copy, x='maand', hue='vertraagd')
 # Labels en titel
 ax3.set_title('Count of Delays and Non-Delays per Month')
 ax3.set_ylabel('Count')
-ax3.set_xlabel('Maand')
+ax3.set_xlabel('Month')
 # Plot
 st.pyplot(fig3)
