@@ -25,6 +25,28 @@ flight_5_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluch
 flight_6_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight6.xlsx')
 flight_7_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight7.xlsx')
 
+flight_1_30 = flight_1_30[flight_1_30['[3d Altitude Ft]'] >= 500]
+y1_30 = flight_1_30['[3d Altitude Ft]']
+flight_2_30 = flight_2_30[flight_1_30['[3d Altitude Ft]'] >= 500]
+y2_30 = flight_2_30['[3d Altitude Ft]']
+flight_3_30 = flight_3_30[flight_1_30['[3d Altitude Ft]'] >= 500]
+y3_30 = flight_3_30['[3d Altitude Ft]']
+flight_4_30 = flight_4_30[flight_1_30['[3d Altitude Ft]'] >= 500]
+y4_30 = flight_4_30['[3d Altitude Ft]']
+flight_5_30 = flight_5_30[flight_1_30['[3d Altitude Ft]'] >= 500]
+y5_30 = flight_5_30['[3d Altitude Ft]']
+flight_6_30 = flight_6_30[flight_1_30['[3d Altitude Ft]'] >= 500]
+y6_30 = flight_6_30['[3d Altitude Ft]']
+flight_7_30 = flight_7_30[flight_1_30['[3d Altitude Ft]'] >= 500]
+y7_30 = flight_7_30['[3d Altitude Ft]']
+
+x_1tijd = flight_1_30['Time (secs)']
+x_2tijd = flight_2_30['Time (secs)']
+x_3tijd = flight_3_30['Time (secs)']
+x_4tijd = flight_4_30['Time (secs)']
+x_5tijd = flight_5_30['Time (secs)']
+x_6tijd = flight_6_30['Time (secs)']
+x_7tijd = flight_7_30['Time (secs)']
 
 fig1, ax1 = plt.subplots()
 sns.lineplot(data=flight_1_30, x=x_1tijd, y=y1_30, label='vlucht 1')
