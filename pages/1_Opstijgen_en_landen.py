@@ -11,22 +11,20 @@ st.write(
     Hierin is voor elke vlucht de hoogte en de tijd te zien."""
 )
 
-progress_bar = st.sidebar.progress(0)
-status_text = st.sidebar.empty()
-last_rows = np.random.randn(1, 1)
-chart = st.line_chart(last_rows)
+flight_1_30 = pd.read_excel('/Users/Jaspe/Downloads/case3_data/case3/30Flight 1.xlsx')
+flight_2_30 = pd.read_excel('/Users/Jaspe/Downloads/case3_data/case3/30Flight 2.xlsx')
 
-for i in range(1, 101):
-    new_rows = last_rows[-1, :] + np.random.randn(5, 1).cumsum(axis=0)
-    status_text.text("%i%% Complete" % i)
-    chart.add_rows(new_rows)
-    progress_bar.progress(i)
-    last_rows = new_rows
-    time.sleep(0.05)
 
-progress_bar.empty()
-
-# Streamlit widgets automatically run the script from top to bottom. Since
-# this button is not connected to any other logic, it just causes a plain
-# rerun.
-st.button("Re-run")
+fig1, ax1 = plt.subplots()
+sns.lineplot(data=flight_1_30, x=x_1tijd, y=y1_30, label='vlucht 1')
+sns.lineplot(data=flight_2_30, x=x_2tijd, y=y2_30, label='vlucht 2')
+sns.lineplot(data=flight_3_30, x=x_3tijd, y=y3_30, label='vlucht 3')
+sns.lineplot(data=flight_4_30, x=x_4tijd, y=y4_30, label='vlucht 4')
+sns.lineplot(data=flight_5_30, x=x_5tijd, y=y5_30, label='vlucht 5')
+sns.lineplot(data=flight_6_30, x=x_6tijd, y=y6_30, label='vlucht 6')
+sns.lineplot(data=flight_7_30, x=x_7tijd, y=y7_30, label='vlucht 7')
+plt.legend()
+plt.xlabel('Tijd in seconde')
+plt.ylabel('Altitude in feets')
+plt.title('Altitude tegenover tijd in seconde van de 7 vluchten')
+plt.show()
