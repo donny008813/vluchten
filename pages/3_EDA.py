@@ -94,4 +94,21 @@ ax4.set_ylabel('Count')
 ax4.set_xlabel('Airline')
 st.pyplot(fig4)
 
+# Plot vertraagd aantal vluchten voor voorspelling
+import matplotlib.dates as mdates
 
+# Group by date and count the number of delayed flights
+delayed_counts = vluchten_copy.groupby('STD')['vertraagd'].sum().reset_index()
+
+fig5, ax5 = plt.subplots()
+
+sns.barplot(x='STD', y='vertraagd', data=delayed_counts, color='lightblue')
+
+ax5.set_title('Number of Delayed Flights per Day')
+ax5.set_xlabel('Date')
+ax5.set_ylabel('Number of Delayed Flights')
+ax5.tick_params(axis='x', rotation=45)
+ax5.xaxis.set_major_locator(mdates.YearLocator())  # Set major ticks for each year
+plt.tight_layout()
+
+st.pyplot(fig5)
