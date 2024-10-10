@@ -4,6 +4,7 @@ from datetime import datetime
 import seaborn as sns
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
+import streamlit as st
 
 csv_url = 'https://raw.githubusercontent.com/donny008813/vluchten/main/schedule_airport.csv'
 vluchten = pd.read_csv(csv_url)
