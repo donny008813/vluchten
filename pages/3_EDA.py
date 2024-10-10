@@ -92,3 +92,6 @@ sns.countplot(data=vluchten_copy, x='maatschappij', hue='vertraagd')
 ax4.set_title('Count of Delays and Non-Delays per Airline')
 ax4.set_ylabel('Count')
 ax4.set_xlabel('Airline')
+st.pyplot(fig4)
+
+
