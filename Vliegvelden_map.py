@@ -4,10 +4,10 @@ import pandas as pd
 from streamlit_folium import st_folium
 
 st.set_page_config(
-    page_title="Hallo en welkom bij de vluchtenmap"
+    page_title="Hallo en welkom bij de vliegveldenmap"
 )
 
-st.write("# Welkom bij de vluchtenmap van onze data")
+st.write("# Welkom bij de vliegveldenmap van onze data")
 
 st.markdown(
     """
