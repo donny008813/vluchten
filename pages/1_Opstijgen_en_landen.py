@@ -12,13 +12,13 @@ st.write(
     Hierin is voor elke vlucht de hoogte en de tijd te zien."""
 )
 
-flight_1_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight 1.xlsx')
-flight_2_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight 2.xlsx')
-flight_3_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight 3.xlsx')
-flight_4_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight 4.xlsx')
-flight_5_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight 5.xlsx')
-flight_6_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight 6.xlsx')
-flight_7_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight 7.xlsx')
+flight_1_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight1.xlsx')
+flight_2_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight2.xlsx')
+flight_3_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight3.xlsx')
+flight_4_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight4.xlsx')
+flight_5_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight5.xlsx')
+flight_6_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight6.xlsx')
+flight_7_30 = pd.read_excel('https://raw.githubusercontent.com/donny008813/vluchten/main/30Flight7.xlsx')
 
 
 fig1, ax1 = plt.subplots()
