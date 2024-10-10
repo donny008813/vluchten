@@ -5,6 +5,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 
+csv_url = 
+vluchten = pd.read_csv(csv_url)
+
 vluchten_copy = vluchten.copy()
 
 vluchten_copy['STA_STD_ltc'] = pd.to_datetime(vluchten_copy['STA_STD_ltc'], format='%H:%M:%S').dt.time
