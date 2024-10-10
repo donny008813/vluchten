@@ -45,11 +45,16 @@ continent_centers = {
 map_center = continent_centers[selected_continent]
 m = folium.Map(location=map_center, zoom_start=3, max_bounds=True, dragging=False, scrollWheelZoom=False)
 
-# Add markers for the airports
+# Add circle markers (dots) for the airports
 for _, airport in continent_airports.iterrows():
-    folium.Marker(
+    folium.CircleMarker(
         location=[airport['Latitude'], airport['Longitude']],
-        popup=f"{airport['Name']} ({airport['IATA']})",
+        radius=5,  # Adjust radius to control the size of the dot
+        color='red',  # You can customize the color
+        fill=True,
+        fill_color='blue',
+        fill_opacity=0.6,
+        popup=f"{airport['Name']} ({airport['IATA']})"
     ).add_to(m)
 
 # Display the map in Streamlit
