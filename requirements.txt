@@ -5,3 +5,5 @@ numpy
 cbsodata
 matplotlib
 scikit-learn
+folium
+streamlit-folium
