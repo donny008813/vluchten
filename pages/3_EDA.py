@@ -48,6 +48,7 @@ vluchten_copy['maand'] = vluchten_copy['STD'].dt.month
 vluchten_vertraagd = vluchten_copy[vluchten_copy['vertraagd'] == 1]
 
 st.title('EDA')
+st.write(vluchten_copy)
 
 #Hist vertraagd
 fig1, ax1 = plt.subplots()
