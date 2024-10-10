@@ -58,7 +58,7 @@ def identify_airline(flight_number):
 
 vluchten_copy['maatschappij'] = vluchten_copy['FLT'].apply(identify_airline)
 
-st.title('EDA')
+st.title('Vertraging van vluchten voorspellen')
 st.write(vluchten_copy)
 
 #Hist vertraagd
@@ -94,7 +94,7 @@ st.pyplot(fig3)
 flight_counts = vluchten_copy['maatschappij'].value_counts().nlargest(10).index
 
 # Filtering DataFrame for top 10 airlines
-top_10_df = vluchgten_copy[vluchten_copy['maatschappij'].isin(flight_counts)]
+top_10_df = vluchten_copy[vluchten_copy['maatschappij'].isin(flight_counts)]
 
 fig4, ax4 = plt.subplots()
 sns.countplot(data=top_10_df, x='maatschappij', hue='vertraagd')
