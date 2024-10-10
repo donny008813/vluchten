@@ -2,6 +2,11 @@ import streamlit as st
 import time
 import numpy as np
 import pandas as pd
+from datetime import datetime
+import seaborn as sns
+import matplotlib.pyplot as plt
+from datetime import datetime, timedelta
+
 
 st.set_page_config(page_title="Vergelijking van opstijgen en landen")
 
