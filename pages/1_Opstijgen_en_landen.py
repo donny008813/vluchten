@@ -13,6 +13,11 @@ st.write(
 
 flight_1_30 = pd.read_excel('/Users/Jaspe/Downloads/case3_data/case3/30Flight 1.xlsx')
 flight_2_30 = pd.read_excel('/Users/Jaspe/Downloads/case3_data/case3/30Flight 2.xlsx')
+flight_3_30 = pd.read_excel('/Users/Jaspe/Downloads/case3_data/case3/30Flight 3.xlsx')
+flight_4_30 = pd.read_excel('/Users/Jaspe/Downloads/case3_data/case3/30Flight 4.xlsx')
+flight_5_30 = pd.read_excel('/Users/Jaspe/Downloads/case3_data/case3/30Flight 5.xlsx')
+flight_6_30 = pd.read_excel('/Users/Jaspe/Downloads/case3_data/case3/30Flight 6.xlsx')
+flight_7_30 = pd.read_excel('/Users/Jaspe/Downloads/case3_data/case3/30Flight 7.xlsx')
 
 
 fig1, ax1 = plt.subplots()
@@ -24,7 +29,7 @@ sns.lineplot(data=flight_5_30, x=x_5tijd, y=y5_30, label='vlucht 5')
 sns.lineplot(data=flight_6_30, x=x_6tijd, y=y6_30, label='vlucht 6')
 sns.lineplot(data=flight_7_30, x=x_7tijd, y=y7_30, label='vlucht 7')
 plt.legend()
-plt.xlabel('Tijd in seconde')
-plt.ylabel('Altitude in feets')
-plt.title('Altitude tegenover tijd in seconde van de 7 vluchten')
-plt.show()
+ax1.set_xlabel('Tijd in seconde')
+ax1.set_ylabel('Altitude in feets')
+ax1.set_title('Altitude tegenover tijd in seconde van de 7 vluchten')
+st.pyplot(fig1)
