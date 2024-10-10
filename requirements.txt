@@ -8,4 +8,4 @@ scikit-learn
 folium
 streamlit-folium
 openpyxl
-sklearn
+scikit-learn
