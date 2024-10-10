@@ -39,7 +39,7 @@ def vertraagd(x) :
 
 vluchten_copy['vertraagd'] = vluchten_copy['verschil'].apply(vertraagd)
 
-vluchten_copy['STD'] = pd.to_datetime(vluchten_copy['STD'], format = '%Y/%m/%d')
+vluchten_copy['STD'] = pd.to_datetime(vluchten_copy['STD'])
 
 vluchten_copy['dag'] = vluchten_copy['STD'].dt.day
 vluchten_copy['maand'] = vluchten_copy['STD'].dt.month
