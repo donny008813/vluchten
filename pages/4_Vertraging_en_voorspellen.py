@@ -149,4 +149,82 @@ pred = logmodel.predict(X_test)
 test_data_acc = accuracy_score(y_test, pred)
 st.write('Accuracy score of test data:', test_data_acc)
 
+# Aantallen krijgen voor de maanden vluchten
+monthly_flight_counts = vluchten_copy.groupby(['maand', 'maatschappij']).size().reset_index(name='total_flights')
+monthly_flight_counts
+
+# Aantallen krijgen voor de vertraagden per maand
+monthly_delay_counts = vluchten_copy.groupby(['maand', 'maatschappij'])['vertraagd'].sum().reset_index()
+monthly_delay_counts
+
+# Samenvoegen en verhouding bepalen
+monthly_stats = pd.merge(monthly_flight_counts, monthly_delay_counts, on=['maand', 'maatschappij'])
+monthly_stats['delay_rate'] = monthly_stats['vertraagd'] / monthly_stats['total_flights']
+monthly_stats
+
+# Toekomstige data maken om te voorspellen, per maatschappij en maand
+unique_airlines = vluchten_copy['maatschappij'].unique()
+future_months = pd.DataFrame()
+
+for maatschappij in unique_airlines:
+    airline_future = pd.DataFrame({
+        'maand': range(1, 13),  # Months from 1 to 12
+        'maatschappij': [maatschappij] * 12  # Repeated airline value for each month
+    })
+    future_months = pd.concat([future_months, airline_future], ignore_index=True)
+
+# Samenvoegen als een dataframe
+future_months = pd.merge(future_months, monthly_flight_counts, on=['maand', 'maatschappij'], how='left')
+
+# Vullen als er geen historische data was met 0
+future_months['total_flights'].fillna(0, inplace=True)
+
+# Encoden voor model
+future_months_encoded = pd.get_dummies(future_months, columns=['maand', 'maatschappij'])
+
+# Wijzigen van kolomnamen anders kan het model niet toegepast worden
+month_columns = [col for col in future_months_encoded.columns if col.startswith('maand_')]
+new_month_column_names = {col: col.split('_')[1] for col in month_columns}
+future_months_encoded.rename(columns=new_month_column_names, inplace=True)
+
+maatschappij_columns = [col for col in future_months_encoded.columns if col.startswith('maatschappij_')]
+new_maatschappij_column_names = {col: col.split('_')[1] for col in maatschappij_columns}
+future_months_encoded.rename(columns=new_maatschappij_column_names, inplace=True)
+
+# Voorspel data maken
+X_future = future_months_encoded.drop(columns=['total_flights'])
+
+X_future = X_future[X_train.columns]
+
+# Kansen bepalen aan de hand van het model
+probabilities = logmodel.predict_proba(X_future)[:, 1] 
+
+# Aantal vertragingen per maand bepalen
+future_months['predicted_delays'] = future_months['total_flights'] * probabilities
+
+expected_delays_summary = future_months.groupby('maand')['predicted_delays'].sum().reset_index()
+
+# Maken van plot voor het tonen van het model met de echte waarde ervoor
+vluchten_maand = vluchten_copy.copy()
+
+vluchten_maand.set_index('STD', inplace=True)
+delayed_counts = vluchten_maand.resample('M')['vertraagd'].sum().reset_index()
+
+year = 2021
+
+# Voeg datum toe aan voorspelling
+expected_delays_summary['maand'] = pd.to_datetime(expected_delays_summary['maand'].astype(str) + f'-{year}', format='%m-%Y')
+
+fig6, ax6 = plt.subplot()
+
+sns.lineplot(data=delayed_counts, x='STD', y='vertraagd', marker='o')
+sns.lineplot(data=expected_delays_summary, x='maand', y='predicted_delays', marker='o')
+
+plt.legend()
+ax6.set_title('Number of Delayed Flights per Month')
+ax6.set_xlabel('Date')
+ax6.set_ylabel('Number of Delayed Flights')
+ax6.tick_params(axis='x', rotation=45)
+
+st.pyplot(fig6)
 
