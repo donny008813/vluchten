@@ -5,7 +5,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 
-csv_url = 'https://raw.githubusercontent.com/donny008813/vluchten/main/airports-extended-clean.csv'
+csv_url = 'https://raw.githubusercontent.com/donny008813/vluchten/main/schedule_airport.csv'
 vluchten = pd.read_csv(csv_url)
 
 vluchten_copy = vluchten.copy()
