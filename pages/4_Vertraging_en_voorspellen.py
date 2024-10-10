@@ -91,8 +91,13 @@ ax3.set_xlabel('Month')
 st.pyplot(fig3)
 
 # Hist vertraagd maatschappij
+flight_counts = vluchten_copy['maatschappij'].value_counts().nlargest(10).index
+
+# Filtering DataFrame for top 10 airlines
+top_10_df = vluchgten_copy[vluchten_copy['maatschappij'].isin(flight_counts)]
+
 fig4, ax4 = plt.subplots()
-sns.countplot(data=vluchten_copy, x='maatschappij', hue='vertraagd')
+sns.countplot(data=top_10_df, x='maatschappij', hue='vertraagd')
 ax4.set_title('Count of Delays and Non-Delays per Airline')
 ax4.set_ylabel('Count')
 ax4.set_xlabel('Airline')
