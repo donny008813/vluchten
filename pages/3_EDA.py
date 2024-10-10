@@ -47,6 +47,13 @@ vluchten_copy['maand'] = vluchten_copy['STD'].dt.month
 
 vluchten_vertraagd = vluchten_copy[vluchten_copy['vertraagd'] == 1]
 
+# Maakt een functie aan om de vluchtnummers aan de luchtvaartmaatschapijen te kunnen koppelen
+def identify_airline(flight_number):
+    airline_code = flight_number[:2]
+    return airline_code
+
+vluchten_copy['maatschappij'] = vluchten_copy['FLT'].apply(identify_airline)
+
 st.title('EDA')
 st.write(vluchten_copy)
 
@@ -78,3 +85,10 @@ ax3.set_ylabel('Count')
 ax3.set_xlabel('Month')
 # Plot
 st.pyplot(fig3)
+
+# Hist vertraagd maatschappij
+fig4, ax4 = plt.subplots()
+sns.countplot(data=vluchten_copy, x='maatschappij', hue='vertraagd')
+ax4.set_title('Count of Delays and Non-Delays per Airline')
+ax4.set_ylabel('Count')
+ax4.set_xlabel('Airline')
