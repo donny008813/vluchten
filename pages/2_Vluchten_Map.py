@@ -2,12 +2,14 @@ import streamlit as st
 import folium
 import pandas as pd
 from streamlit_folium import st_folium
-url_csv = 
+url_csv = 'https://raw.githubusercontent.com/donny008813/vluchten/main/airports-extended-clean.csv'
 df = pd.read_csv(url_csv, sep = ';', decimal = ',')
 
 vliegvelden_comp = df.copy()
 vliegvelden_comp = vliegvelden_comp[['ICAO', 'Longitude', 'Latitude']]
-vliegvelden_comp
+
+csv_url = 'https://raw.githubusercontent.com/donny008813/vluchten/main/schedule_airport.csv'
+vluchten = pd.read_csv(csv_url)
 
 vluchten_loc = vluchten.copy()
 vluchten_loc = vluchten_loc['Org/Des']
