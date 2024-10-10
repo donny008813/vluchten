@@ -5,6 +5,10 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import streamlit as st
+import sklearn.linear_model as lm
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+import matplotlib.dates as mdates
 
 csv_url = 'https://raw.githubusercontent.com/donny008813/vluchten/main/schedule_airport.csv'
 vluchten = pd.read_csv(csv_url)
@@ -94,9 +98,6 @@ ax4.set_ylabel('Count')
 ax4.set_xlabel('Airline')
 st.pyplot(fig4)
 
-# Plot vertraagd aantal vluchten voor voorspelling
-import matplotlib.dates as mdates
-
 # Group by date and count the number of delayed flights
 delayed_counts = vluchten_copy.groupby('STD')['vertraagd'].sum().reset_index()
 
@@ -112,3 +113,35 @@ ax5.xaxis.set_major_locator(mdates.YearLocator())  # Set major ticks for each ye
 plt.tight_layout()
 
 st.pyplot(fig5)
+
+st.subheader('Voorspellen van vertraging')
+model_data = vluchten_copy.copy()
+
+airline = pd.get_dummies(model_data['maatschappij'])
+maand = pd.get_dummies(model_data['maand'])
+
+model_data = pd.concat([model_data, airline], axis=1)
+model_data = pd.concat([model_data, maand], axis=1)
+
+model_data = model_data.drop(['STD', 'FLT', 'STA_STD_ltc', 'ATA_ATD_ltc', 'TAR', 'GAT', 'DL1', 'IX1', 'DL2', 'IX2', 'ACT', 'RWY', 'RWC', 'Identifier', 'verschil', 'dag', 'maatschappij', 'maand', 'LSV', 'Org/Des'], axis=1)
+
+X = model_data.drop('vertraagd', axis=1)
+y = model_data['vertraagd']
+
+X.columns = X.columns.astype(str)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
+
+logmodel = lm.LogisticRegression()
+logmodel.fit(X_train, y_train)
+
+X_train_pred = logmodel.predict(X_train)
+training_data_acc = accuracy_score(y_train, X_train_pred)
+
+st.write('Accuracy score of training data:', training_data_acc)
+
+pred = logmodel.predict(X_test)
+test_data_acc = accuracy_score(y_test, pred)
+st.write('Accuracy score of test data:', test_data_acc)
+
+
