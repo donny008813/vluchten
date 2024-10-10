@@ -50,14 +50,14 @@ vluchten_vertraagd = vluchten_copy[vluchten_copy['vertraagd'] == 1]
 st.title('EDA')
 
 #Hist vertraagd
-fig3, ax3 = plt.subplots()
+fig1, ax1 = plt.subplots()
 sns.countplot(data=vluchten_copy, x = 'vertraagd')
 ax3.set_title('Count of Delays and Non-Delays')
 ax3.set_ylabel('Count')
-st.pyplot(fig3)
+st.pyplot(fig1)
 
 # Hist vertraagd dag
-fig1, ax1 = plt.subplots()
+fig2, ax2 = plt.subplots()
 # Plot de vertragingen per dag
 plt.figure(figsize=(10, 6))
 sns.countplot(data=vluchten_copy, x='dag', hue='vertraagd')
@@ -66,10 +66,10 @@ ax1.set_title('Count of Delays and Non-Delays per Day')
 ax1.set_ylabel('Count')
 ax1.set_xlabel('Day')
 # Plot de eerste plot
-st.pyplot(fig1)
+st.pyplot(fig2)
 
 # Hist vertraagd maand
-fig2, ax2 = plt.subplots()
+fig3, ax3 = plt.subplots()
 # Plot de vertragingen per maand
 plt.figure(figsize=(10,6))
 sns.countplot(data=vluchten_copy, x='maand', hue='vertraagd')
@@ -78,4 +78,4 @@ ax2.set_title('Count of Delays and Non-Delays per Month')
 ax2.set_ylabel('Count')
 ax2.set_xlabel('Maand')
 # Plot
-st.pyplot(fig2)
+st.pyplot(fig3)
