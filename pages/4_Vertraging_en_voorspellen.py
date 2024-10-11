@@ -151,16 +151,15 @@ st.write('Accuracy score of test data:', test_data_acc)
 
 # Aantallen krijgen voor de maanden vluchten
 monthly_flight_counts = vluchten_copy.groupby(['maand', 'maatschappij']).size().reset_index(name='total_flights')
-monthly_flight_counts
 
 # Aantallen krijgen voor de vertraagden per maand
 monthly_delay_counts = vluchten_copy.groupby(['maand', 'maatschappij'])['vertraagd'].sum().reset_index()
-monthly_delay_counts
+
 
 # Samenvoegen en verhouding bepalen
 monthly_stats = pd.merge(monthly_flight_counts, monthly_delay_counts, on=['maand', 'maatschappij'])
 monthly_stats['delay_rate'] = monthly_stats['vertraagd'] / monthly_stats['total_flights']
-monthly_stats
+
 
 # Toekomstige data maken om te voorspellen, per maatschappij en maand
 unique_airlines = vluchten_copy['maatschappij'].unique()
@@ -215,7 +214,7 @@ year = 2021
 # Voeg datum toe aan voorspelling
 expected_delays_summary['maand'] = pd.to_datetime(expected_delays_summary['maand'].astype(str) + f'-{year}', format='%m-%Y')
 
-fig6, ax6 = plt.subplot()
+fig6, ax6 = plt.subplots()
 
 sns.lineplot(data=delayed_counts, x='STD', y='vertraagd', marker='o')
 sns.lineplot(data=expected_delays_summary, x='maand', y='predicted_delays', marker='o')
