@@ -82,7 +82,7 @@ vertraagd_aantal_dag = vluchten_copy.groupby(['dag_van_week', 'vertraagd']).size
 
 # Plotten
 fig1, ax1 = plt.subplots()
-vertraagd_aantal_dag.plot(kind='bar', ax1=ax1)
+vertraagd_aantal_dag.plot(kind='bar', ax1)
 ax.set_title('Aantal vertraagde en niet vertraagde vluchten per dag van de week')
 ax.set_ylabel('Aantal Vluchten')
 ax.set_xlabel('Dag van de week')
