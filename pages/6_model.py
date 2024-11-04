@@ -58,6 +58,8 @@ def identify_airline(flight_number):
 
 vluchten_copy['maatschappij'] = vluchten_copy['FLT'].apply(identify_airline)
 
+###################################################################################################### EDA Plotten
+
 # Aantal vertraagde en niet-vertraagde vluchten per seizoen tellen
 vertraagd_aantal = vluchten_copy.groupby(['seizoen', 'vertraagd']).size().unstack(fill_value=0)
 
@@ -74,6 +76,20 @@ ax.legend(['Niet Vertraagd', 'Vertraagd'])
 st.title('Vluchten Analyse')
 st.pyplot(fig)
 
+# Aantal vertraagde vluchten per dag van de week
+vertraagd_aantal_dag = vluchten_copy.groupby(['dag_van_week', 'vertraagd']).size().unstack(fill_value=0)
+
+# Plotten
+fig1, ax1 = plt.subplots()
+vertraagd_aantal_dag.plot(kind='bar', ax=ax1)
+ax.set_title('Aantal vertraagde en niet vertraagde vluchten per dag van de week')
+ax.set_ylabel('Aantal Vluchten')
+ax.set_xlabel('Dag van de week')
+ax.set_xticklabels(['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag'], rotation=0)
+ax.legend(['Niet Vertraagd', 'Vertraagd'])
+
+# Streamlit
+st.pyplot(fig1)
 
 ########################################################################################################### Model
 # One-hot encoding voor categorische variabelen
