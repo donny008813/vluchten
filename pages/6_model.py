@@ -74,6 +74,7 @@ ax.legend(['Niet Vertraagd', 'Vertraagd'])
 
 # Weergave in Streamlit
 st.title('Vluchten Analyse')
+st.write(vluchten_copy)
 st.pyplot(fig)
 
 # Aantal vertraagde vluchten per dag van de week
