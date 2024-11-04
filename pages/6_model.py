@@ -65,7 +65,7 @@ fig_vertraagd, ax_vertraagd = plt.subplots()
 totaal_vertraagd.plot(kind='bar', ax=ax_vertraagd)
 ax_vertraagd.set_title('Aantal Vertaagd en niet vertraagd')
 ax_vertraagd.set_ylabel('Aantal Vluchten')
-ax_vertraag.legend(['Niet Vertraagd', 'Vertraagd'])
+ax_vertraagd.legend(['Niet Vertraagd', 'Vertraagd'])
 st.pyplot(fig_vertraagd)
 
 # Aantal vertraagde en niet-vertraagde vluchten per seizoen tellen
