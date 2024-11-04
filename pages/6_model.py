@@ -60,6 +60,8 @@ vluchten_copy['maatschappij'] = vluchten_copy['FLT'].apply(identify_airline)
 
 ###################################################################################################### EDA Plotten
 
+
+
 # Aantal vertraagde en niet-vertraagde vluchten per seizoen tellen
 vertraagd_aantal = vluchten_copy.groupby(['seizoen', 'vertraagd']).size().unstack(fill_value=0)
 
@@ -86,7 +88,7 @@ vertraagd_aantal_dag.plot(kind='bar', ax=ax_dagen)
 ax_dagen.set_title('Aantal vertraagde en niet vertraagde vluchten per dag van de week')
 ax_dagen.set_ylabel('Aantal Vluchten')
 ax_dagen.set_xlabel('Dag van de week')
-ax_dagen.set_xticklabels(['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag'], rotation=0)
+ax_dagen.set_xticklabels(['Ma', 'Di', 'Wo', 'Do', 'Vrij', 'Za', 'Zo'], rotation=0)
 ax_dagen.legend(['Niet Vertraagd', 'Vertraagd'])
 
 # Streamlit
