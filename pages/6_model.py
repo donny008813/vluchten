@@ -83,7 +83,7 @@ vertraagd_dag_maand.plot(kind='bar', ax=ax_dag_maand)
 ax_dag_maand.set_title('Totaal aantal Vluchten per Dag van de Maand')
 ax_dag_maand.set_ylabel('Aantal Vluchten')
 ax_dag_maand.set_xlabel('Dag van de Maand')
-ax_dag_maand.set_xticklabels([str(i) for i in range(1, 31)], rotation=0)  # Labels voor de dagen van de maand
+ax_dag_maand.set_xticklabels([str(i) for i in range(1, 30)], rotation=0)  # Labels voor de dagen van de maand
 ax_dag_maand.legend(['Niet Vertraagd', 'Vertraagd'])
 
 # Aantal vertraagde en niet-vertraagde vluchten per seizoen tellen
