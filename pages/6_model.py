@@ -64,6 +64,7 @@ def identify_airline(flight_number):
 vluchten_copy['maatschappij'] = vluchten_copy['FLT'].apply(identify_airline)
 
 ###################################################################################################### EDA Plotten
+# Aantal vertraagd
 totaal_vertraagd = vluchten_copy['vertraagd'].value_counts()
 
 fig_vertraagd, ax_vertraagd = plt.subplots()
@@ -73,7 +74,17 @@ ax_vertraagd.set_ylabel('Aantal Vluchten')
 ax_vertraagd.set_xlabel('Status')
 ax_vertraagd.set_xticklabels(['Niet Vertraagd', 'Vertraagd'], rotation=0)
 ax_vertraagd.legend(['Niet Vertraagd', 'Vertraagd'])
-st.pyplot(fig_vertraagd)
+
+# Aantal vertraagd per dag van de maand
+vertraagd_dag_maand = vluchten_copy.groupby(['dag', 'vertraagd']).size().unstack(fill_value=0)
+
+fig_dag_maand, ax_dag_maand = plt.subplots()
+vertraagd_dag_maand.plot(kind='bar', ax=ax_dag_maand)
+ax_dag_maand.set_title('Totaal aantal Vluchten per Dag van de Maand')
+ax_dag_maand.set_ylabel('Aantal Vluchten')
+ax_dag_maand.set_xlabel('Dag van de Maand')
+ax_dag_maand.set_xticklabels([str(i) for i in range(1, 31)], rotation=0)  # Labels voor de dagen van de maand
+ax_dag_maand.legend(['Niet Vertraagd', 'Vertraagd'])
 
 # Aantal vertraagde en niet-vertraagde vluchten per seizoen tellen
 vertraagd_aantal = vluchten_copy.groupby(['seizoen', 'vertraagd']).size().unstack(fill_value=0)
@@ -87,11 +98,6 @@ ax.set_xlabel('Seizoen')
 ax.set_xticklabels(['Lente', 'Zomer', 'Herfst', 'Winter'], rotation=0)  # Labels voor de seizoenen
 ax.legend(['Niet Vertraagd', 'Vertraagd'])
 
-# Weergave in Streamlit
-st.title('Vluchten Analyse')
-st.write(vluchten_copy)
-st.pyplot(fig)
-
 # Aantal vertraagde vluchten per dag van de week
 vertraagd_aantal_dag = vluchten_copy.groupby(['dag_van_week', 'vertraagd']).size().unstack(fill_value=0)
 
@@ -104,7 +110,12 @@ ax_dagen.set_xlabel('Dag van de week')
 ax_dagen.set_xticklabels(['Ma', 'Di', 'Wo', 'Do', 'Vrij', 'Za', 'Zo'], rotation=0)
 ax_dagen.legend(['Niet Vertraagd', 'Vertraagd'])
 
-# Streamlit
+# Weergave in Streamlit
+st.title('Vluchten Analyse')
+st.write(vluchten_copy)
+st.pyplot(fig_vertraagd)
+st.pyplot(fig_dag_maand)
+st.pyplot(fig)
 st.pyplot(fig_dagen)
 
 ########################################################################################################### Model
