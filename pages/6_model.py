@@ -9,9 +9,14 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 import matplotlib.dates as mdates
 
-# Data inladen
-csv_url = 'https://raw.githubusercontent.com/donny008813/vluchten/main/schedule_airport.csv'
-vluchten = pd.read_csv(csv_url)
+# Voeg caching toe voor het laden van de dataset
+@st.cache_data
+def load_data():
+    csv_url = 'https://raw.githubusercontent.com/donny008813/vluchten/main/schedule_airport.csv'
+    return pd.read_csv(csv_url)
+
+# Laad de gegevens met caching
+vluchten = load_data()
 
 vluchten_copy = vluchten.copy()
 
