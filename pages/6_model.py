@@ -93,3 +93,74 @@ st.write('Accuracy score of training data:', training_data_acc)
 pred = logmodel.predict(X_test)
 test_data_acc = accuracy_score(y_test, pred)
 st.write('Accuracy score of test data:', test_data_acc)
+
+# Voor toekomstige voorspellingen met de nieuwe variabelen
+future_months = pd.DataFrame()
+
+# Unieke combinaties van uur van vertrek, dag van de week en seizoen
+unique_airlines = vluchten_copy['maatschappij'].unique()
+for maatschappij in unique_airlines:
+    for uur in range(24):  # Alle uren van de dag
+        for dag_van_week in range(7):  # Alle dagen van de week
+            for seizoen in range(1, 5):  # Alle seizoenen
+                future_data = pd.DataFrame({
+                    'uur_van_vertrek': [uur],
+                    'dag_van_week': [dag_van_week],
+                    'seizoen': [seizoen],
+                    'maatschappij': [maatschappij]
+                })
+                future_months = pd.concat([future_months, future_data], ignore_index=True)
+
+# Encoderen van de nieuwe data
+future_months = pd.get_dummies(future_months, columns=['dag_van_week', 'seizoen', 'maatschappij'])
+
+# Kolomnamen aanpassen voor consistentie met het model
+future_months = future_months.reindex(columns=X_train.columns, fill_value=0)
+
+# Voorspellen van vertragingen
+probabilities = logmodel.predict_proba(future_months)[:, 1]
+future_months['predicted_delays'] = probabilities
+
+# Samenvatting per uur/dag/seizoen maken voor visualisatie
+predicted_delays_summary = future_months.groupby(['uur_van_vertrek'])['predicted_delays'].sum().reset_index()
+
+# Plotten van de voorspelde vertragingen
+fig, ax = plt.subplots()
+
+sns.lineplot(data=predicted_delays_summary, x='uur_van_vertrek', y='predicted_delays', marker='o')
+ax.set_title('Verwachte vertragingen per uur van de dag')
+ax.set_xlabel('Uur van vertrek')
+ax.set_ylabel('Aantal verwachte vertragingen')
+
+plt.xticks(range(24))  # Labels voor elk uur van de dag
+plt.grid(True)
+st.pyplot(fig)
+
+# Gemiddelde vertragingen per uur van vertrek plotten
+fig1, ax1 = plt.subplots()
+sns.barplot(data=vluchten_copy, x='uur_van_vertrek', y='vertraagd', estimator=np.mean, ci=None)
+ax1.set_title('Gemiddelde kans op vertraging per uur van vertrek')
+ax1.set_xlabel('Uur van vertrek')
+ax1.set_ylabel('Gemiddelde kans op vertraging')
+plt.xticks(range(24))  # Labels voor elk uur van de dag
+plt.grid(True)
+st.pyplot(fig1)
+
+# Gemiddelde vertragingen per dag van de week plotten
+fig2, ax2 = plt.subplots()
+sns.barplot(data=vluchten_copy, x='dag_van_week', y='vertraagd', estimator=np.mean, ci=None)
+ax2.set_title('Gemiddelde kans op vertraging per dag van de week')
+ax2.set_xlabel('Dag van de week (0=Ma, 6=Zo)')
+ax2.set_ylabel('Gemiddelde kans op vertraging')
+plt.grid(True)
+st.pyplot(fig2)
+
+# Gemiddelde vertragingen per seizoen plotten
+fig3, ax3 = plt.subplots()
+sns.barplot(data=vluchten_copy, x='seizoen', y='vertraagd', estimator=np.mean, ci=None)
+ax3.set_title('Gemiddelde kans op vertraging per seizoen')
+ax3.set_xlabel('Seizoen (1=Winter, 2=Lente, 3=Zomer, 4=Herfst)')
+ax3.set_ylabel('Gemiddelde kans op vertraging')
+plt.grid(True)
+st.pyplot(fig3)
+
