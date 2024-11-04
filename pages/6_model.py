@@ -58,6 +58,24 @@ def identify_airline(flight_number):
 
 vluchten_copy['maatschappij'] = vluchten_copy['FLT'].apply(identify_airline)
 
+# Aantal vertraagde en niet-vertraagde vluchten per seizoen tellen
+vertraagd_aantal = vluchten_copy.groupby(['seizoen', 'vertraagd']).size().unstack(fill_value=0)
+
+# Plotten
+fig, ax = plt.subplots()
+vertraagd_aantal.plot(kind='bar', ax=ax)
+ax.set_title('Aantal Vertraagde en Niet-Vertraagde Vluchten per Seizoen')
+ax.set_ylabel('Aantal Vluchten')
+ax.set_xlabel('Seizoen')
+ax.set_xticklabels(['Lente', 'Zomer', 'Herfst', 'Winter'], rotation=0)  # Labels voor de seizoenen
+ax.legend(['Niet Vertraagd', 'Vertraagd'])
+
+# Weergave in Streamlit
+st.title('Vluchten Analyse')
+st.pyplot(fig)
+
+
+########################################################################################################### Model
 # One-hot encoding voor categorische variabelen
 airline = pd.get_dummies(vluchten_copy['maatschappij'])
 maand = pd.get_dummies(vluchten_copy['maand'], prefix='maand')
@@ -121,46 +139,6 @@ future_months = future_months.reindex(columns=X_train.columns, fill_value=0)
 probabilities = logmodel.predict_proba(future_months)[:, 1]
 future_months['predicted_delays'] = probabilities
 
-# Samenvatting per uur/dag/seizoen maken voor visualisatie
-predicted_delays_summary = future_months.groupby(['uur_van_vertrek'])['predicted_delays'].sum().reset_index()
-
-# Plotten van de voorspelde vertragingen
-fig, ax = plt.subplots()
-
-sns.lineplot(data=predicted_delays_summary, x='uur_van_vertrek', y='predicted_delays', marker='o')
-ax.set_title('Verwachte vertragingen per uur van de dag')
-ax.set_xlabel('Uur van vertrek')
-ax.set_ylabel('Aantal verwachte vertragingen')
-
-plt.xticks(range(24))  # Labels voor elk uur van de dag
-plt.grid(True)
-st.pyplot(fig)
-
-# Gemiddelde vertragingen per uur van vertrek plotten
-fig1, ax1 = plt.subplots()
-sns.barplot(data=vluchten_copy, x='uur_van_vertrek', y='vertraagd', estimator=np.mean, ci=None)
-ax1.set_title('Gemiddelde kans op vertraging per uur van vertrek')
-ax1.set_xlabel('Uur van vertrek')
-ax1.set_ylabel('Gemiddelde kans op vertraging')
-plt.xticks(range(24))  # Labels voor elk uur van de dag
-plt.grid(True)
-st.pyplot(fig1)
-
-# Gemiddelde vertragingen per dag van de week plotten
-fig2, ax2 = plt.subplots()
-sns.barplot(data=vluchten_copy, x='dag_van_week', y='vertraagd', estimator=np.mean, ci=None)
-ax2.set_title('Gemiddelde kans op vertraging per dag van de week')
-ax2.set_xlabel('Dag van de week (0=Ma, 6=Zo)')
-ax2.set_ylabel('Gemiddelde kans op vertraging')
-plt.grid(True)
-st.pyplot(fig2)
-
-# Gemiddelde vertragingen per seizoen plotten
-fig3, ax3 = plt.subplots()
-sns.barplot(data=vluchten_copy, x='seizoen', y='vertraagd', estimator=np.mean, ci=None)
-ax3.set_title('Gemiddelde kans op vertraging per seizoen')
-ax3.set_xlabel('Seizoen (1=Winter, 2=Lente, 3=Zomer, 4=Herfst)')
-ax3.set_ylabel('Gemiddelde kans op vertraging')
-plt.grid(True)
-st.pyplot(fig3)
+# Aantal vertraagde en niet-vertraagde vluchten per seizoen tellen
+vertraagd_aantal = vluchten_copy.groupby(['seizoen', 'vertraagd']).size().unstack(fill_value=0)
 
