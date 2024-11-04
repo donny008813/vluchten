@@ -61,6 +61,19 @@ vluchten_copy['maatschappij'] = vluchten_copy['FLT'].apply(identify_airline)
 st.title('Vertraging van vluchten voorspellen')
 st.write(vluchten_copy)
 
+vertraging_drempel_minuten = st.slider('Selecteer de minimum vertragingstijd in minuten:', min_value=0, max_value=60, value=1)
+
+# Pas de kolom 'vertraagd' aan op basis van de drempelwaarde in minuten
+vertraging_drempel_seconden = vertraging_drempel_minuten * 60
+vluchten_copy['vertraagd'] = vluchten_copy['verschil'].apply(lambda x: 1 if x > vertraging_drempel_seconden else 0)
+
+# Toon de bijgewerkte grafiek
+fig, ax = plt.subplots()
+sns.countplot(data=vluchten_copy, x='vertraagd')
+ax.set_title('Aantal Vertragingen en Geen-Vertragingen')
+ax.set_ylabel('Aantal')
+st.pyplot(fig)
+
 #Hist vertraagd
 fig1, ax1 = plt.subplots()
 sns.countplot(data=vluchten_copy, x = 'vertraagd')
