@@ -81,16 +81,16 @@ st.pyplot(fig)
 vertraagd_aantal_dag = vluchten_copy.groupby(['dag_van_week', 'vertraagd']).size().unstack(fill_value=0)
 
 # Plotten
-fig1, ax1 = plt.subplots()
-vertraagd_aantal_dag.plot(kind='bar', ax1)
-ax.set_title('Aantal vertraagde en niet vertraagde vluchten per dag van de week')
-ax.set_ylabel('Aantal Vluchten')
-ax.set_xlabel('Dag van de week')
-ax.set_xticklabels(['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag'], rotation=0)
-ax.legend(['Niet Vertraagd', 'Vertraagd'])
+fig_dagen, ax_dagen = plt.subplots()
+vertraagd_aantal_dag.plot(kind='bar', ax=ax_dagen)
+ax_dagen.set_title('Aantal vertraagde en niet vertraagde vluchten per dag van de week')
+ax_dagen.set_ylabel('Aantal Vluchten')
+ax_dagen.set_xlabel('Dag van de week')
+ax_dagen.set_xticklabels(['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag'], rotation=0)
+ax_dagen.legend(['Niet Vertraagd', 'Vertraagd'])
 
 # Streamlit
-st.pyplot(fig1)
+st.pyplot(fig_dagen)
 
 ########################################################################################################### Model
 # One-hot encoding voor categorische variabelen
