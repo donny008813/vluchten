@@ -139,6 +139,3 @@ future_months = future_months.reindex(columns=X_train.columns, fill_value=0)
 probabilities = logmodel.predict_proba(future_months)[:, 1]
 future_months['predicted_delays'] = probabilities
 
-# Aantal vertraagde en niet-vertraagde vluchten per seizoen tellen
-vertraagd_aantal = vluchten_copy.groupby(['seizoen', 'vertraagd']).size().unstack(fill_value=0)
-
