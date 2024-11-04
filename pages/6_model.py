@@ -23,6 +23,16 @@ vluchten_copy['ATA_ATD_ltc'] = pd.to_datetime(vluchten_copy['ATA_ATD_ltc'], form
 def time_to_seconds(time_obj):
     return time_obj.hour * 3600 + time_obj.minute * 60 + time_obj.second
 
+# Function to calculate the difference in total seconds, allowing for negative values
+def time_diff_in_seconds(start_time, end_time):
+    start_seconds = time_to_seconds(start_time)
+    end_seconds = time_to_seconds(end_time)
+    
+    # Calculate the difference in seconds
+    diff_seconds = end_seconds - start_seconds
+    
+    return diff_seconds
+
 # Verschil in seconden berekenen
 vluchten_copy['verschil'] = vluchten_copy.apply(lambda row: time_diff_in_seconds(row['STA_STD_ltc'], row['ATA_ATD_ltc']), axis=1)
 
