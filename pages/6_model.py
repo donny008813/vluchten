@@ -59,8 +59,14 @@ def identify_airline(flight_number):
 vluchten_copy['maatschappij'] = vluchten_copy['FLT'].apply(identify_airline)
 
 ###################################################################################################### EDA Plotten
+totaal_vertraagd = vluchten_copy['vertraagd'].value_counts()
 
-
+fig_vertraagd, ax_vertraagd = plt.subplots()
+totaal_vertraagd.plot(kind='bar', ax=ax_vertraagd)
+ax_vertraagd.set_title('Aantal Vertaagd en niet vertraagd')
+ax_vertraagd.set_ylabel('Aantal Vluchten')
+ax_vertraag.legend(['Niet Vertraagd', 'Vertraagd'])
+st.pyplot(fig_vertraagd)
 
 # Aantal vertraagde en niet-vertraagde vluchten per seizoen tellen
 vertraagd_aantal = vluchten_copy.groupby(['seizoen', 'vertraagd']).size().unstack(fill_value=0)
