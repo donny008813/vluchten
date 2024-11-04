@@ -38,7 +38,7 @@ vluchten_copy['verschil'] = vluchten_copy.apply(lambda row: time_diff_in_seconds
 
 # Functie voor het bepalen van vertraging
 def vertraagd(x):
-    return 1 if x > 0 else 0
+    return 1 if x > 900 else 0
 
 vluchten_copy['vertraagd'] = vluchten_copy['verschil'].apply(vertraagd)
 
