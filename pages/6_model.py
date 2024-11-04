@@ -73,7 +73,6 @@ ax_vertraagd.set_title('Aantal Vertaagd en niet vertraagd')
 ax_vertraagd.set_ylabel('Aantal Vluchten')
 ax_vertraagd.set_xlabel('Status')
 ax_vertraagd.set_xticklabels(['Niet Vertraagd', 'Vertraagd'], rotation=0)
-ax_vertraagd.legend(['Niet Vertraagd', 'Vertraagd'])
 
 # Aantal vertraagd per dag van de maand
 vertraagd_dag_maand = vluchten_copy.groupby(['dag', 'vertraagd']).size().unstack(fill_value=0)
@@ -83,8 +82,31 @@ vertraagd_dag_maand.plot(kind='bar', ax=ax_dag_maand)
 ax_dag_maand.set_title('Totaal aantal Vluchten per Dag van de Maand')
 ax_dag_maand.set_ylabel('Aantal Vluchten')
 ax_dag_maand.set_xlabel('Dag van de Maand')
-ax_dag_maand.set_xticklabels([str(i) for i in range(1, 32)], rotation=0)  # Labels voor de dagen van de maand
+ax_dag_maand.set_xticklabels([str(i) for i in range(1, 32)], rotation=90)  # Labels voor de dagen van de maand
 ax_dag_maand.legend(['Niet Vertraagd', 'Vertraagd'])
+
+# Aantal vertraagd per uur van de dag
+vertraagd_uur = vluchten_copy.groupby(['uur_van_vertrek', 'vertraagd']).size().unstack(fill_value=0)
+fig_uur , ax_uur = plt.subplots()
+vertraagd_uur.plot(kind='bar', ax=ax_uur)
+ax_uur.set_title('Totaal aantal Vluchten per Uur van de Dag')
+ax_uur.set_ylabel('Aantal Vluchten')
+ax_uur.set_xlabel('Uur van de Dag')
+ax_uur.set_xticks(range(0, 24))
+ax_uur.set_xticklabels([str(i) for i in range(0, 24)], rotation=0)  # Labels voor de uren van de dag
+ax_uur.legend(['Niet Vertraagd', 'Vertraagd'])
+
+# Totaal aantal vertraagde en niet-vertraagde vluchten per maand van het jaar
+totaal_vertraagd_per_maand = vluchten_copy.groupby(['maand', 'vertraagd']).size().unstack(fill_value=0)
+
+fig_maand, ax_maand = plt.subplots()
+totaal_vertraagd_per_maand.plot(kind='bar', ax=ax, color=['lightcoral', 'lightgreen'])
+ax_maand.set_title('Totaal aantal Vluchten per Maand van het Jaar')
+ax_maand.set_ylabel('Aantal Vluchten')
+ax_maand.set_xlabel('Maand')
+ax_maand.set_xticks(range(0, 12))
+ax_maand.set_xticklabels(['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'], rotation=45)
+ax_maand.legend(['Niet Vertraagd', 'Vertraagd'])
 
 # Aantal vertraagde en niet-vertraagde vluchten per seizoen tellen
 vertraagd_aantal = vluchten_copy.groupby(['seizoen', 'vertraagd']).size().unstack(fill_value=0)
@@ -114,9 +136,10 @@ ax_dagen.legend(['Niet Vertraagd', 'Vertraagd'])
 st.title('Vluchten Analyse')
 st.write(vluchten_copy)
 st.pyplot(fig_vertraagd)
+st.pyplot(fig) # Seizoenen
 st.pyplot(fig_dag_maand)
-st.pyplot(fig)
 st.pyplot(fig_dagen)
+st.pyplot(fig_uur)
 
 ########################################################################################################### Model
 # One-hot encoding voor categorische variabelen
