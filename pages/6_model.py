@@ -65,6 +65,8 @@ fig_vertraagd, ax_vertraagd = plt.subplots()
 totaal_vertraagd.plot(kind='bar', ax=ax_vertraagd)
 ax_vertraagd.set_title('Aantal Vertaagd en niet vertraagd')
 ax_vertraagd.set_ylabel('Aantal Vluchten')
+ax_vertraagd.set_xlabel('Status')
+ax_vertraagd.set_xticklabels(['Niet Vertraagd', 'Vertraagd'], rotation=0)
 ax_vertraagd.legend(['Niet Vertraagd', 'Vertraagd'])
 st.pyplot(fig_vertraagd)
 
