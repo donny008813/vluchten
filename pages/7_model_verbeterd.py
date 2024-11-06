@@ -267,18 +267,30 @@ elif optie == "Visualisaties":
     st.header("Visualisaties van Vluchtgegevens")
     st.pyplot(fig_vertraagd)
     plt.close(fig_vertraagd)
+    with st.expander("Zie oude grafiek"):
+        st.write("Hier wordt de oude grafiek getoond")
+        st.image("https://raw.githubusercontent.com/donny008813/vluchten/main/TotaalVertraagd.PNG")
     st.pyplot(fig) # Seizoenen
     plt.close(fig)
     st.pyplot(fig_maand)
     plt.close(fig_maand)
+    with st.expander("Zie oude grafiek"):
+        st.write("Hier wordt de oude grafiek getoond")
+        st.image("https://raw.githubusercontent.com/donny008813/vluchten/main/Maand.PNG")
     st.pyplot(fig_dag_maand)
     plt.close(fig_dag_maand)
+    with st.expander("Zie oude grafiek"):
+        st.write("Hier wordt de oude grafiek getoond")
+        st.image("https://raw.githubusercontent.com/donny008813/vluchten/main/DagMaand.PNG")
     st.pyplot(fig_dagen)
     plt.close(fig_dagen)
     st.pyplot(fig_uur)
     plt.close(fig_uur)
     st.pyplot(fig4) # Top 10 Maatschappij
     plt.close(fig4)
+    with st.expander("Zie oude grafiek"):
+        st.write("Hier wordt de oude grafiek getoond")
+        st.image("https://raw.githubusercontent.com/donny008813/vluchten/main/Maatschappij.PNG")
     
     # Dropdown menu voor selectie van vliegtuigmaatschappij
     maatschappij_selectie = st.selectbox('Selecteer een vliegtuigmaatschappij', vluchten_copy['maatschappij'].unique())
