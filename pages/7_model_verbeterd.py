@@ -320,6 +320,8 @@ elif optie == "Visualisaties":
     
     st.pyplot(fig5) # Hele dataframe
     plt.close(fig5)
+    with st.expander("Zie oude grafiek"):
+        st.write("Hier wordt de oude grafiek getoond")
 
 elif optie == "Modelanalyse":
     st.header("Modelresultaten")
