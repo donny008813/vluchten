@@ -148,9 +148,11 @@ airline = pd.get_dummies(vluchten_copy['maatschappij'])
 maand = pd.get_dummies(vluchten_copy['maand'], prefix='maand')
 dag_van_week = pd.get_dummies(vluchten_copy['dag_van_week'], prefix='dag_van_week')
 seizoen = pd.get_dummies(vluchten_copy['seizoen'], prefix='seizoen')
+uur_van_vertrek = pd.get_dummies(vluchten_copy['uur_van_vertrek'], prefix='uur')
 
 # Toevoegen van nieuwe features aan de data
 model_data = pd.concat([vluchten_copy, airline, maand, dag_van_week, seizoen], axis=1)
+model_data = pd.concat([model_data, uur_van_vertrek], axis=1)
 
 # Onnodige kolommen verwijderen
 model_data = model_data.drop(['STD', 'FLT', 'STA_STD_ltc', 'ATA_ATD_ltc', 'TAR', 'GAT', 'DL1', 'IX1', 'DL2', 'IX2',
@@ -179,30 +181,46 @@ pred = logmodel.predict(X_test)
 test_data_acc = accuracy_score(y_test, pred)
 st.write('Accuracy score of test data:', test_data_acc)
 
-# Voor toekomstige voorspellingen met de nieuwe variabelen
-future_months = pd.DataFrame()
+# Toekomstige data maken om te voorspellen per maatschappij, maand, uur van de dag, dag van de week en seizoen
+future_data = pd.DataFrame()
 
-# Unieke combinaties van uur van vertrek, dag van de week en seizoen
+# Genereer combinaties van maand, uur, dag van de week en seizoen voor alle maatschappijen
 unique_airlines = vluchten_copy['maatschappij'].unique()
 for maatschappij in unique_airlines:
-    for uur in range(24):  # Alle uren van de dag
-        for dag_van_week in range(7):  # Alle dagen van de week
-            for seizoen in range(1, 5):  # Alle seizoenen
-                future_data = pd.DataFrame({
-                    'uur_van_vertrek': [uur],
-                    'dag_van_week': [dag_van_week],
-                    'seizoen': [seizoen],
-                    'maatschappij': [maatschappij]
-                })
-                future_months = pd.concat([future_months, future_data], ignore_index=True)
+    for maand in range(1, 13):  # Maanden 1 tot 12
+        for uur in range(24):  # Uren 0 tot 23
+            for dag_van_week in range(7):  # Dagen van de week 0 tot 6
+                for seizoen in range(1, 5):  # Seizoenen 1 tot 4
+                    row = {
+                        'maand': maand,
+                        'uur_van_vertrek': uur,
+                        'dag_van_week': dag_van_week,
+                        'seizoen': seizoen,
+                        'maatschappij': maatschappij
+                    }
+                    future_data = pd.concat([future_data, pd.DataFrame([row])], ignore_index=True)
 
-# Encoderen van de nieuwe data
-future_months = pd.get_dummies(future_months, columns=['dag_van_week', 'seizoen', 'maatschappij'])
+# One-hot encoding van de toekomstige data
+future_data_encoded = pd.get_dummies(future_data, columns=['maand', 'dag_van_week', 'seizoen', 'maatschappij', 'uur_van_vertrek'])
 
-# Kolomnamen aanpassen voor consistentie met het model
-future_months = future_months.reindex(columns=X_train.columns, fill_value=0)
+# Zorg dat de kolommen overeenkomen met het getrainde model
+future_data_encoded = future_data_encoded.reindex(columns=X_train.columns, fill_value=0)
 
-# Voorspellen van vertragingen
-probabilities = logmodel.predict_proba(future_months)[:, 1]
-future_months['predicted_delays'] = probabilities
+# Voorspellen van het aantal vertraagde vluchten
+future_data_encoded['predicted_delays'] = logmodel.predict_proba(future_data_encoded)[:, 1]
+
+# Samenvatting van voorspellingen per maand maken
+future_data_encoded['maand'] = future_data_encoded['maand'].apply(lambda x: x if isinstance(x, int) else 0)
+predicted_delays_summary = future_data_encoded.groupby('maand')['predicted_delays'].sum().reset_index()
+
+# Plot maken van de voorspellingen
+fig, ax = plt.subplots()
+sns.lineplot(data=predicted_delays_summary, x='maand', y='predicted_delays', marker='o')
+ax.set_title('Verwacht aantal vertraagde vluchten per maand')
+ax.set_xlabel('Maand')
+ax.set_ylabel('Verwacht aantal vertraagde vluchten')
+plt.xticks(range(1, 13), ['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'])
+plt.grid(True)
+
+st.pyplot(fig)
 
