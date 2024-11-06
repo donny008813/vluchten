@@ -343,7 +343,7 @@ elif optie == "Modelanalyse":
     st.markdown('''
     De scores van het nieuwe model en het oude model worden hier getoond. De variabelen die in het oude model zijn gebruikt:
     - Dag van de maand
-    - Vliegtuigmaatschappij
+    - Vliegtuigmaatschappij  
     Voor het nieuwe model zijn de volgende variabelen toegevoegd:
     - Dag van de week
     - Seizoen
