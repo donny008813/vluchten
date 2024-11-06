@@ -206,7 +206,6 @@ ax_fabrikant.legend(['Niet Vertraagd', 'Vertraagd'])
 
 plt.tight_layout()  # Zorg ervoor dat alles netjes past
 
-"""
 # Weergave in Streamlit
 st.title('Vluchten Analyse')
 st.write(vluchten_copy)
@@ -265,7 +264,7 @@ plt.close(fig_fabrikant)
 
 st.pyplot(fig5) # Hele dataframe
 plt.close(fig5)
-"""
+
 ########################################################################################################### Model
 # One-hot encoding voor categorische variabelen
 airline = pd.get_dummies(vluchten_copy['maatschappij'])
@@ -305,82 +304,3 @@ pred = logmodel.predict(X_test)
 test_data_acc = accuracy_score(y_test, pred)
 #st.write('Accuracy score of test data:', test_data_acc)
 
-# Streamlit mooi maken
-st.title("Vluchten Analyse Dashboard")
-st.sidebar.header("Navigatie")
-optie = st.sidebar.radio(
-    "Kies een sectie:",
-    ["Dataset Overzicht", "Visualisaties", "Modelanalyse", "Voorspellingen"]
-)
-
-if optie == "Dataset Overzicht":
-    st.header("Overzicht van de Dataset")
-    vluchten = load_data()
-    st.dataframe(vluchten)
-
-elif optie == "Visualisaties":
-    st.header("Visualisaties van Vluchtgegevens")
-    st.dataframe(vluchten_copy)
-    st.pyplot(fig_vertraagd)
-    plt.close(fig_vertraagd)
-    st.pyplot(fig) # Seizoenen
-    plt.close(fig)
-    st.pyplot(fig_maand)
-    plt.close(fig_maand)
-    st.pyplot(fig_dag_maand)
-    plt.close(fig_dag_maand)
-    st.pyplot(fig_dagen)
-    plt.close(fig_dagen)
-    st.pyplot(fig_uur)
-    plt.close(fig_uur)
-    st.pyplot(fig4) # Top 10 Maatschappij
-    plt.close(fig4)
-    # Dropdown menu voor selectie van vliegtuigmaatschappij
-    maatschappij_selectie = st.selectbox('Selecteer een vliegtuigmaatschappij', vluchten_copy['maatschappij'].unique())
-
-    # Filter DataFrame op geselecteerde vliegtuigmaatschappij
-    df_geselecteerd = vluchten_copy[vluchten_copy['maatschappij'] == maatschappij_selectie]
-
-    # Totaal aantal vertraagde en niet-vertraagde vluchten voor de geselecteerde maatschappij per maand
-    totaal_vertraagd_per_maat = df_geselecteerd.groupby(['vertraagd']).size()
-    totaal_vertraagd_per_maand = df_geselecteerd.groupby(['maand', 'vertraagd']).size().unstack(fill_value=0)
-
-    # Plotten
-    st.subheader(f'Totaal aantal Vluchten voor {maatschappij_selectie}: Vertraagd vs Niet-Vertraagd')
-
-    fig_maat, ax_maat = plt.subplots()
-    totaal_vertraagd_per_maat.plot(kind='bar', ax=ax_maat, color=['lightcoral', 'lightgreen'])
-    ax_maat.set_title(f'Totaal aantal Vluchten voor {maatschappij_selectie}')
-    ax_maat.set_ylabel('Aantal Vluchten')
-    ax_maat.set_xlabel('Status')
-    ax_maat.set_xticks([0, 1])
-    ax_maat.set_xticklabels(['Niet Vertraagd', 'Vertraagd'], rotation=0)
-    ax_maat.legend(['Aantal Vluchten'])
-    st.pyplot(fig_maat)
-    plt.close(fig_maat)
-
-    fig_maat_maand, ax_maat_maand = plt.subplots()
-    totaal_vertraagd_per_maand.plot(kind='bar', ax=ax_maat_maand, color=['lightcoral', 'lightgreen'])
-    ax_maat_maand.set_title(f'Totaal aantal Vluchten voor {maatschappij_selectie} per Maand van het Jaar')
-    ax_maat_maand.set_ylabel('Aantal Vluchten')
-    ax_maat_maand.set_xlabel('Maand')
-    ax_maat_maand.set_xticks(range(0, 12))
-    ax_maat_maand.set_xticklabels(['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'], rotation=45)
-    ax_maat_maand.legend(['Niet Vertraagd', 'Vertraagd'])
-    st.pyplot(fig_maat_maand)
-    plt.close(fig_maat_maand)
-
-    st.pyplot(fig_fabrikant)
-    plt.close(fig_fabrikant)
-
-    st.pyplot(fig5) # Hele dataframe
-    plt.close(fig5)
-    
-
-elif optie == "Modelanalyse":
-    st.header("Modelresultaten")
-    
-    st.write("Accuracy van het model:")
-    # Training en test accuracies weergeven
-    st.metric("Training Accuracy", f"{training_data_acc:.2%}")
-    st.metric("Test Accuracy", f"{test_data_acc:.2%}")
