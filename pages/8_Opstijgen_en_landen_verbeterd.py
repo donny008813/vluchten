@@ -96,8 +96,8 @@ with col1:
 
     # Customize the plot
     ax1.set_xlabel('Tijd in minuten')
-    ax1.set_ylabel('Altitude in kilometers')
-    ax1.set_title('Altitude tegenover tijd in minuten van de 7 vluchten')
+    ax1.set_ylabel('Hoogte in kilometers')
+    ax1.set_title('Hoogte (in km) gedurende de vlucht, in minuten')
 
     # Display the plot in Streamlit
     st.pyplot(fig1)
