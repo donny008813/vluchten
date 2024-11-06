@@ -364,8 +364,6 @@ elif optie == "Modelanalyse":
         # Training en test accuracies weergeven
         st.metric("Training Accuracy", f"{training_data_acc:.2%}")
         st.metric("Test Accuracy", f"{test_data_acc:.2%}")
-        st.write("Precision van het nieuwe model:")
-        st.metric("Test Precision", f"{precision:.2%}")
     with col1:
         st.write("Accuracy van het oude model:")
         st.metric("Training Accuracy", f"{0.6511734725424208:.2%}")
