@@ -183,19 +183,19 @@ maatschappij_selectie = st.selectbox('Selecteer een vliegtuigmaatschappij', vluc
 df_geselecteerd = vluchten_copy[vluchten_copy['maatschappij'] == maatschappij_selectie]
 
 # Totaal aantal vertraagde en niet-vertraagde vluchten voor de geselecteerde maatschappij per maand
-totaal_vertraagd_per_maand = df_geselecteerd.groupby(['maand', 'vertraagd']).size().unstack(fill_value=0)
+totaal_vertraagd_per_maand = df_geselecteerd.groupby(['vertraagd']).size().unstack(fill_value=0)
 
 # Plotten
-st.subheader(f'Totaal aantal Vluchten voor {maatschappij_selectie} per Maand van het Jaar: Vertraagd vs Niet-Vertraagd')
+st.subheader(f'Totaal aantal Vluchten voor {maatschappij_selectie}: Vertraagd vs Niet-Vertraagd')
 
 fig_maat, ax_maat = plt.subplots()
 totaal_vertraagd_per_maand.plot(kind='bar', ax=ax_maat, color=['lightcoral', 'lightgreen'])
-ax_maat.set_title(f'Totaal aantal Vluchten voor {maatschappij_selectie} per Maand van het Jaar')
+ax_maat.set_title(f'Totaal aantal Vluchten voor {maatschappij_selectie}')
 ax_maat.set_ylabel('Aantal Vluchten')
-ax_maat.set_xlabel('Maand')
-ax_maat.set_xticks(range(0, 12))
-ax_maat.set_xticklabels(['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'], rotation=45)
-ax_maat.legend(['Niet Vertraagd', 'Vertraagd'])
+ax_maat.set_xlabel('Status')
+ax_maat.set_xticks([0, 1])
+ax_maat.set_xticklabels(['Niet Vertraagd', 'Vertraagd'], rotation=0)
+ax_maat.legend(['Aantal Vluchten'])
 st.pyplot(fig_maat)
 plt.close(fig_maat)
 
