@@ -158,16 +158,51 @@ ax5.tick_params(axis='x', rotation=45)
 ax5.xaxis.set_major_locator(mdates.YearLocator())  # Set major ticks for each year
 plt.tight_layout()
 
-# Aantal vertraagd per type vliegtuig
-vertraagd_type_vliegtuig = vluchten_copy.groupby(['ACT', 'vertraagd']).size().unstack(fill_value=0)
+# Mapping van vliegtuigtypes naar fabrikanten
+fabrikant_mapping = {
+    # Airbus modellen
+    'A300': 'Airbus', 'A310': 'Airbus', 'A318': 'Airbus', 'A319': 'Airbus', 
+    'A320': 'Airbus', 'A321': 'Airbus', 'A330': 'Airbus', 'A340': 'Airbus', 
+    'A350': 'Airbus', 'A380': 'Airbus',
+    
+    # Boeing modellen
+    'B707': 'Boeing', 'B717': 'Boeing', 'B727': 'Boeing', 'B737': 'Boeing', 
+    'B747': 'Boeing', 'B757': 'Boeing', 'B767': 'Boeing', 'B777': 'Boeing', 
+    'B787': 'Boeing',
+    
+    # Embraer modellen
+    'E170': 'Embraer', 'E175': 'Embraer', 'E190': 'Embraer', 'E195': 'Embraer',
+    
+    # Bombardier modellen
+    'CRJ': 'Bombardier', 'CS1': 'Bombardier', 'CS3': 'Bombardier',
+    
+    # ATR modellen
+    'AT4': 'ATR', 'AT7': 'ATR', 'AT8': 'ATR',
+    
+    # McDonnell Douglas modellen
+    'MD8': 'McDonnell Douglas', 'MD9': 'McDonnell Douglas', 'MD1': 'McDonnell Douglas',
+    
+    # Fokker modellen
+    'F27': 'Fokker', 'F28': 'Fokker', 'F70': 'Fokker', 'F100': 'Fokker',
+    
+    # Andere merken
+    'SU9': 'Sukhoi', 'IL6': 'Ilyushin', 'TU1': 'Tupolev', 'TU2': 'Tupolev',
+    'DHC': 'De Havilland', 'AN1': 'Antonov'
+}
 
-fig_type_vliegtuig, ax_type_vliegtuig = plt.subplots()
-vertraagd_type_vliegtuig.plot(kind='bar', ax=ax_type_vliegtuig, color=['lightgreen', 'lightcoral'])
-ax_type_vliegtuig.set_title('Totaal aantal Vluchten per Type Vliegtuig')
-ax_type_vliegtuig.set_ylabel('Aantal Vluchten')
-ax_type_vliegtuig.set_xlabel('Type Vliegtuig')
-ax_type_vliegtuig.set_xticklabels(vertraagd_type_vliegtuig.index, rotation=90)  # Labels voor de typen vliegtuigen
-ax_type_vliegtuig.legend(['Niet Vertraagd', 'Vertraagd'])
+# Voeg een nieuwe kolom toe voor de fabrikant in de DataFrame
+vluchten_copy['Fabrikant'] = vluchten_copy['ACT'].map(lambda x: fabrikant_mapping.get(x[:3], 'Onbekend'))
+
+# Aantal vertraagd per fabrikant
+vertraagd_fabrikant = vluchten_copy.groupby(['Fabrikant', 'vertraagd']).size().unstack(fill_value=0)
+
+fig_fabrikant, ax_fabrikant = plt.subplots()
+vertraagd_fabrikant.plot(kind='bar', ax=ax_fabrikant, color=['lightgreen', 'lightcoral'])
+ax_fabrikant.set_title('Totaal aantal Vluchten per Fabrikant')
+ax_fabrikant.set_ylabel('Aantal Vluchten')
+ax_fabrikant.set_xlabel('Fabrikant')
+ax_fabrikant.set_xticklabels(vertraagd_fabrikant.index, rotation=45)  # Labels voor fabrikanten
+ax_fabrikant.legend(['Niet Vertraagd', 'Vertraagd'])
 
 plt.tight_layout()  # Zorg ervoor dat alles netjes past
 
@@ -224,8 +259,8 @@ ax_maat_maand.legend(['Niet Vertraagd', 'Vertraagd'])
 st.pyplot(fig_maat_maand)
 plt.close(fig_maat_maand)
 
-st.pyplot(fig_type_vliegtuig)
-plt.close(fig_type_vliegtuig)
+st.pyplot(fig_fabrikant)
+plt.close(fig_fabrikant)
 
 st.pyplot(fig5) # Hele dataframe
 plt.close(fig5)
