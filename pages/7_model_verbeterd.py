@@ -249,13 +249,14 @@ st.title("Vluchten Analyse Dashboard")
 st.sidebar.header("Navigatie")
 optie = st.sidebar.radio(
     "Kies een sectie:",
-    ["Dataset Overzicht", "Visualisaties", "Modelanalyse", "Voorspellingen"]
+    ["Dataset Overzicht", "Visualisaties", "Modelanalyse"]
 )
 
 if optie == "Dataset Overzicht":
     st.header("Overzicht van de Dataset")
     vluchten = load_data()
     st.dataframe(vluchten)
+    st.subheader('Overzicht van uitgebreide Dataset')
     st.dataframe(vluchten_copy)
     st.write('Data ter beschikking gesteld door de HvA via de DLO')
 
