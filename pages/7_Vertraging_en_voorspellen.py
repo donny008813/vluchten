@@ -67,6 +67,7 @@ sns.countplot(data=vluchten_copy, x = 'vertraagd')
 ax1.set_title('Count of Delays and Non-Delays')
 ax1.set_ylabel('Count')
 st.pyplot(fig1)
+plt.close(fig1)
 
 # Hist vertraagd dag
 fig2, ax2 = plt.subplots()
@@ -78,6 +79,7 @@ ax2.set_ylabel('Count')
 ax2.set_xlabel('Day')
 # Plot de eerste plot
 st.pyplot(fig2)
+plt.close(fig2)
 
 # Hist vertraagd maand
 fig3, ax3 = plt.subplots()
@@ -89,6 +91,7 @@ ax3.set_ylabel('Count')
 ax3.set_xlabel('Month')
 # Plot
 st.pyplot(fig3)
+plt.close(fig3)
 
 # Hist vertraagd maatschappij
 flight_counts = vluchten_copy['maatschappij'].value_counts().nlargest(10).index
@@ -102,6 +105,7 @@ ax4.set_title('Count of Delays and Non-Delays per Airline')
 ax4.set_ylabel('Count')
 ax4.set_xlabel('Airline')
 st.pyplot(fig4)
+plt.close(fig4)
 
 # Group by date and count the number of delayed flights
 delayed_counts = vluchten_copy.groupby('STD')['vertraagd'].sum().reset_index()
@@ -118,6 +122,7 @@ ax5.xaxis.set_major_locator(mdates.YearLocator())  # Set major ticks for each ye
 plt.tight_layout()
 
 st.pyplot(fig5)
+plt.close(fig5)
 
 st.subheader('Voorspellen van vertraging')
 model_data = vluchten_copy.copy()
@@ -226,4 +231,5 @@ ax6.set_ylabel('Number of Delayed Flights')
 ax6.tick_params(axis='x', rotation=45)
 
 st.pyplot(fig6)
+plt.close(fig6)
 
