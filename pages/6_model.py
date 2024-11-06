@@ -206,6 +206,7 @@ ax_fabrikant.legend(['Niet Vertraagd', 'Vertraagd'])
 
 plt.tight_layout()  # Zorg ervoor dat alles netjes past
 
+"""
 # Weergave in Streamlit
 st.title('Vluchten Analyse')
 st.write(vluchten_copy)
@@ -264,7 +265,7 @@ plt.close(fig_fabrikant)
 
 st.pyplot(fig5) # Hele dataframe
 plt.close(fig5)
-
+"""
 ########################################################################################################### Model
 # One-hot encoding voor categorische variabelen
 airline = pd.get_dummies(vluchten_copy['maatschappij'])
@@ -298,52 +299,88 @@ logmodel.fit(X_train, y_train)
 # Resultaten printen
 X_train_pred = logmodel.predict(X_train)
 training_data_acc = accuracy_score(y_train, X_train_pred)
-st.write('Accuracy score of training data:', training_data_acc)
+#st.write('Accuracy score of training data:', training_data_acc)
 
 pred = logmodel.predict(X_test)
 test_data_acc = accuracy_score(y_test, pred)
-st.write('Accuracy score of test data:', test_data_acc)
+#st.write('Accuracy score of test data:', test_data_acc)
 
-# Toekomstige data maken om te voorspellen per maatschappij, maand, uur van de dag, dag van de week en seizoen
-future_data = pd.DataFrame()
+# Streamlit mooi maken
+st.title("Vluchten Analyse Dashboard")
+st.sidebar.header("Navigatie")
+optie = st.sidebar.radio(
+    "Kies een sectie:",
+    ["Dataset Overzicht", "Visualisaties", "Modelanalyse", "Voorspellingen"]
+)
 
-# Genereer combinaties van maand, uur, dag van de week en seizoen voor alle maatschappijen
-unique_airlines = vluchten_copy['maatschappij'].unique()
-for maatschappij in unique_airlines:
-    for maand in range(1, 13):  # Maanden 1 tot 12
-        for uur in range(24):  # Uren 0 tot 23
-            for dag_van_week in range(7):  # Dagen van de week 0 tot 6
-                for seizoen in range(1, 5):  # Seizoenen 1 tot 4
-                    row = {
-                        'maand': maand,
-                        'uur_van_vertrek': uur,
-                        'dag_van_week': dag_van_week,
-                        'seizoen': seizoen,
-                        'maatschappij': maatschappij
-                    }
-                    future_data = pd.concat([future_data, pd.DataFrame([row])], ignore_index=True)
+if optie == "Dataset Overzicht":
+    st.header("Overzicht van de Dataset")
+    vluchten = load_data()
+    st.dataframe(vluchten)
 
-# One-hot encoding van de toekomstige data
-future_data_encoded = pd.get_dummies(future_data, columns=['maand', 'dag_van_week', 'seizoen', 'maatschappij', 'uur_van_vertrek'])
+elif optie == "Visualisaties":
+    st.header("Visualisaties van Vluchtgegevens")
+    st.dataframe(vluchten_copy)
+    st.pyplot(fig_vertraagd)
+    plt.close(fig_vertraagd)
+    st.pyplot(fig) # Seizoenen
+    plt.close(fig)
+    st.pyplot(fig_maand)
+    plt.close(fig_maand)
+    st.pyplot(fig_dag_maand)
+    plt.close(fig_dag_maand)
+    st.pyplot(fig_dagen)
+    plt.close(fig_dagen)
+    st.pyplot(fig_uur)
+    plt.close(fig_uur)
+    st.pyplot(fig4) # Top 10 Maatschappij
+    plt.close(fig4)
+    # Dropdown menu voor selectie van vliegtuigmaatschappij
+    maatschappij_selectie = st.selectbox('Selecteer een vliegtuigmaatschappij', vluchten_copy['maatschappij'].unique())
 
-# Zorg dat de kolommen overeenkomen met het getrainde model
-future_data_encoded = future_data_encoded.reindex(columns=X_train.columns, fill_value=0)
+    # Filter DataFrame op geselecteerde vliegtuigmaatschappij
+    df_geselecteerd = vluchten_copy[vluchten_copy['maatschappij'] == maatschappij_selectie]
 
-# Voorspellen van het aantal vertraagde vluchten
-future_data_encoded['predicted_delays'] = logmodel.predict_proba(future_data_encoded)[:, 1]
+    # Totaal aantal vertraagde en niet-vertraagde vluchten voor de geselecteerde maatschappij per maand
+    totaal_vertraagd_per_maat = df_geselecteerd.groupby(['vertraagd']).size()
+    totaal_vertraagd_per_maand = df_geselecteerd.groupby(['maand', 'vertraagd']).size().unstack(fill_value=0)
 
-# Samenvatting van voorspellingen per maand maken
-future_data_encoded['maand'] = future_data_encoded['maand'].apply(lambda x: x if isinstance(x, int) else 0)
-predicted_delays_summary = future_data_encoded.groupby('maand')['predicted_delays'].sum().reset_index()
+    # Plotten
+    st.subheader(f'Totaal aantal Vluchten voor {maatschappij_selectie}: Vertraagd vs Niet-Vertraagd')
 
-# Plot maken van de voorspellingen
-fig_voorspel, ax_voorspel = plt.subplots()
-sns.lineplot(data=predicted_delays_summary, x='maand', y='predicted_delays', marker='o')
-ax_voorspel.set_title('Verwacht aantal vertraagde vluchten per maand')
-ax_voorspel.set_xlabel('Maand')
-ax_voorspel.set_ylabel('Verwacht aantal vertraagde vluchten')
-plt.xticks(range(1, 13), ['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'])
-plt.grid(True)
+    fig_maat, ax_maat = plt.subplots()
+    totaal_vertraagd_per_maat.plot(kind='bar', ax=ax_maat, color=['lightcoral', 'lightgreen'])
+    ax_maat.set_title(f'Totaal aantal Vluchten voor {maatschappij_selectie}')
+    ax_maat.set_ylabel('Aantal Vluchten')
+    ax_maat.set_xlabel('Status')
+    ax_maat.set_xticks([0, 1])
+    ax_maat.set_xticklabels(['Niet Vertraagd', 'Vertraagd'], rotation=0)
+    ax_maat.legend(['Aantal Vluchten'])
+    st.pyplot(fig_maat)
+    plt.close(fig_maat)
 
-st.pyplot(fig_voorspel)
+    fig_maat_maand, ax_maat_maand = plt.subplots()
+    totaal_vertraagd_per_maand.plot(kind='bar', ax=ax_maat_maand, color=['lightcoral', 'lightgreen'])
+    ax_maat_maand.set_title(f'Totaal aantal Vluchten voor {maatschappij_selectie} per Maand van het Jaar')
+    ax_maat_maand.set_ylabel('Aantal Vluchten')
+    ax_maat_maand.set_xlabel('Maand')
+    ax_maat_maand.set_xticks(range(0, 12))
+    ax_maat_maand.set_xticklabels(['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'], rotation=45)
+    ax_maat_maand.legend(['Niet Vertraagd', 'Vertraagd'])
+    st.pyplot(fig_maat_maand)
+    plt.close(fig_maat_maand)
 
+    st.pyplot(fig_fabrikant)
+    plt.close(fig_fabrikant)
+
+    st.pyplot(fig5) # Hele dataframe
+    plt.close(fig5)
+    
+
+elif optie == "Modelanalyse":
+    st.header("Modelresultaten")
+    
+    st.write("Accuracy van het model:")
+    # Training en test accuracies weergeven
+    st.metric("Training Accuracy", f"{training_data_acc:.2%}")
+    st.metric("Test Accuracy", f"{test_data_acc:.2%}")
