@@ -136,11 +136,17 @@ ax_dagen.legend(['Niet Vertraagd', 'Vertraagd'])
 st.title('Vluchten Analyse')
 st.write(vluchten_copy)
 st.pyplot(fig_vertraagd)
+plt.close(fig_vertraagd)
 st.pyplot(fig) # Seizoenen
+plt.close(fig)
 st.pyplot(fig_maand)
+plt.close(fig_maand)
 st.pyplot(fig_dag_maand)
+plt.close(fig_dag_maand)
 st.pyplot(fig_dagen)
+plt.close(fig_dagen)
 st.pyplot(fig_uur)
+plt.close(fig_uur)
 
 ########################################################################################################### Model
 # One-hot encoding voor categorische variabelen
