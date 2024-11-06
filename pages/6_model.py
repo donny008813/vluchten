@@ -191,7 +191,7 @@ fabrikant_mapping = {
 }
 
 # Voeg een nieuwe kolom toe voor de fabrikant in de DataFrame
-vluchten_copy['Fabrikant'] = vluchten_copy['ACT'].map(lambda x: fabrikant_mapping.get(x[:3], 'Onbekend'))
+vluchten_copy['Fabrikant'] = vluchten_copy['ACT'].map(lambda x: fabrikant_mapping.get(x[:4], 'Onbekend'))
 
 # Aantal vertraagd per fabrikant
 vertraagd_fabrikant = vluchten_copy.groupby(['Fabrikant', 'vertraagd']).size().unstack(fill_value=0)
