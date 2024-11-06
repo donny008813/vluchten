@@ -258,6 +258,7 @@ optie = st.sidebar.radio(
 if optie == "Dataset Overzicht":
     st.header("Overzicht van de Dataset")
     vluchten = load_data()
+    st.write("Hier worden de gegevens getoond die beschikbaar zijn gesteld voor deze opdracht. Bij de uitgebreide dataset worden de extra features die hieruit zijn opgesteld")
     st.dataframe(vluchten)
     st.subheader('Overzicht van uitgebreide Dataset')
     st.dataframe(vluchten_copy)
@@ -265,6 +266,7 @@ if optie == "Dataset Overzicht":
 
 elif optie == "Visualisaties":
     st.header("Visualisaties van Vluchtgegevens")
+    st.write("De gemaakte visualisaties zullen hier worden getoond. Dit zijn de oude visualisaties met de aangepaste eis van vertraging groter dan 15 minuten. De oude grafieken kunnen getoond worden door de expander te openen. En de extra visualisaties voor het mogelijk selecteren als extra variabele voor het model.")
     st.pyplot(fig_vertraagd)
     plt.close(fig_vertraagd)
     with st.expander("Zie oude grafiek"):
@@ -338,6 +340,12 @@ elif optie == "Visualisaties":
 
 elif optie == "Modelanalyse":
     st.header("Modelresultaten")
+    st.markdown('''
+    De scores van het nieuwe model en het oude model worden hier getoond. Voor het nieuwe model zijn de volgende variabelen toegevoegd:
+    - Dag van de week
+    - Seizoen
+    - Uur van vertrek
+    ''')
     st.write("Accuracy van het model:")
     # Training en test accuracies weergeven
     st.metric("Training Accuracy", f"{training_data_acc:.2%}")
