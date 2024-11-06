@@ -68,7 +68,7 @@ vluchten_copy['maatschappij'] = vluchten_copy['FLT'].apply(identify_airline)
 totaal_vertraagd = vluchten_copy['vertraagd'].value_counts()
 
 fig_vertraagd, ax_vertraagd = plt.subplots()
-totaal_vertraagd.plot(kind='bar', ax=ax_vertraagd)
+totaal_vertraagd.plot(kind='bar', ax=ax_vertraagd, color=['lightcoral', 'lightgreen'])
 ax_vertraagd.set_title('Aantal Vertaagd en niet vertraagd')
 ax_vertraagd.set_ylabel('Aantal Vluchten')
 ax_vertraagd.set_xlabel('Status')
@@ -78,7 +78,7 @@ ax_vertraagd.set_xticklabels(['Niet Vertraagd', 'Vertraagd'], rotation=0)
 vertraagd_dag_maand = vluchten_copy.groupby(['dag', 'vertraagd']).size().unstack(fill_value=0)
 
 fig_dag_maand, ax_dag_maand = plt.subplots()
-vertraagd_dag_maand.plot(kind='bar', ax=ax_dag_maand)
+vertraagd_dag_maand.plot(kind='bar', ax=ax_dag_maand, color=['lightcoral', 'lightgreen'])
 ax_dag_maand.set_title('Totaal aantal Vluchten per Dag van de Maand')
 ax_dag_maand.set_ylabel('Aantal Vluchten')
 ax_dag_maand.set_xlabel('Dag van de Maand')
@@ -88,7 +88,7 @@ ax_dag_maand.legend(['Niet Vertraagd', 'Vertraagd'])
 # Aantal vertraagd per uur van de dag
 vertraagd_uur = vluchten_copy.groupby(['uur_van_vertrek', 'vertraagd']).size().unstack(fill_value=0)
 fig_uur , ax_uur = plt.subplots()
-vertraagd_uur.plot(kind='bar', ax=ax_uur)
+vertraagd_uur.plot(kind='bar', ax=ax_uur, color=['lightcoral', 'lightgreen'])
 ax_uur.set_title('Totaal aantal Vluchten per Uur van de Dag')
 ax_uur.set_ylabel('Aantal Vluchten')
 ax_uur.set_xlabel('Uur van de Dag')
@@ -113,7 +113,7 @@ vertraagd_aantal = vluchten_copy.groupby(['seizoen', 'vertraagd']).size().unstac
 
 # Plotten
 fig, ax = plt.subplots()
-vertraagd_aantal.plot(kind='bar', ax=ax)
+vertraagd_aantal.plot(kind='bar', ax=ax, color=['lightcoral', 'lightgreen'])
 ax.set_title('Aantal Vertraagde en Niet-Vertraagde Vluchten per Seizoen')
 ax.set_ylabel('Aantal Vluchten')
 ax.set_xlabel('Seizoen')
@@ -125,7 +125,7 @@ vertraagd_aantal_dag = vluchten_copy.groupby(['dag_van_week', 'vertraagd']).size
 
 # Plotten
 fig_dagen, ax_dagen = plt.subplots()
-vertraagd_aantal_dag.plot(kind='bar', ax=ax_dagen)
+vertraagd_aantal_dag.plot(kind='bar', ax=ax_dagen, color=['lightcoral', 'lightgreen'])
 ax_dagen.set_title('Aantal vertraagde en niet vertraagde vluchten per dag van de week')
 ax_dagen.set_ylabel('Aantal Vluchten')
 ax_dagen.set_xlabel('Dag van de week')
@@ -139,7 +139,7 @@ flight_counts = vluchten_copy['maatschappij'].value_counts().nlargest(10).index
 top_10_df = vluchten_copy[vluchten_copy['maatschappij'].isin(flight_counts)]
 
 fig4, ax4 = plt.subplots()
-sns.countplot(data=top_10_df, x='maatschappij', hue='vertraagd')
+sns.countplot(data=top_10_df, x='maatschappij', hue='vertraagd', color=['lightcoral', 'lightgreen'])
 ax4.set_title('Count of Delays and Non-Delays per Airline')
 ax4.set_ylabel('Count')
 ax4.set_xlabel('Airline')
@@ -149,7 +149,7 @@ delayed_counts = vluchten_copy.groupby('STD')['vertraagd'].sum().reset_index()
 
 fig5, ax5 = plt.subplots()
 
-sns.barplot(x='STD', y='vertraagd', data=delayed_counts, color='lightblue')
+sns.barplot(x='STD', y='vertraagd', data=delayed_counts, color=['lightcoral', 'lightgreen'])
 
 ax5.set_title('Number of Delayed Flights per Day')
 ax5.set_xlabel('Date')
@@ -175,6 +175,30 @@ st.pyplot(fig_uur)
 plt.close(fig_uur)
 st.pyplot(fig4) # Top 10 Maatschappij
 plt.close(fig4)
+
+# Dropdown menu voor selectie van vliegtuigmaatschappij
+maatschappij_selectie = st.selectbox('Selecteer een vliegtuigmaatschappij', df['maatschappij'].unique())
+
+# Filter DataFrame op geselecteerde vliegtuigmaatschappij
+df_geselecteerd = vluchten_copy[vluchten_copy['maatschappij'] == maatschappij_selectie]
+
+# Totaal aantal vertraagde en niet-vertraagde vluchten voor de geselecteerde maatschappij per maand
+totaal_vertraagd_per_maand = df_geselecteerd.groupby(['maand', 'vertraagd']).size().unstack(fill_value=0)
+
+# Plotten
+st.subheader(f'Totaal aantal Vluchten voor {maatschappij_selectie} per Maand van het Jaar: Vertraagd vs Niet-Vertraagd')
+
+fig_maat, ax_maat = plt.subplots()
+totaal_vertraagd_per_maand.plot(kind='bar', ax=ax_maat, color=['lightcoral', 'lightgreen'])
+ax_maat.set_title(f'Totaal aantal Vluchten voor {maatschappij_selectie} per Maand van het Jaar')
+ax_maat.set_ylabel('Aantal Vluchten')
+ax_maat.set_xlabel('Maand')
+ax_maat.set_xticks(range(0, 12))
+ax_maat.set_xticklabels(['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'], rotation=45)
+ax_maat.legend(['Niet Vertraagd', 'Vertraagd'])
+st.pyplot(fig_maat)
+plt.close(fig_maat)
+
 st.pyplot(fig5) # Hele dataframe
 plt.close(fig5)
 
@@ -250,13 +274,13 @@ future_data_encoded['maand'] = future_data_encoded['maand'].apply(lambda x: x if
 predicted_delays_summary = future_data_encoded.groupby('maand')['predicted_delays'].sum().reset_index()
 
 # Plot maken van de voorspellingen
-fig, ax = plt.subplots()
+fig_voorspel, ax_voorspel = plt.subplots()
 sns.lineplot(data=predicted_delays_summary, x='maand', y='predicted_delays', marker='o')
-ax.set_title('Verwacht aantal vertraagde vluchten per maand')
-ax.set_xlabel('Maand')
-ax.set_ylabel('Verwacht aantal vertraagde vluchten')
+ax_voorspel.set_title('Verwacht aantal vertraagde vluchten per maand')
+ax_voorspel.set_xlabel('Maand')
+ax_voorspel.set_ylabel('Verwacht aantal vertraagde vluchten')
 plt.xticks(range(1, 13), ['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'])
 plt.grid(True)
 
-st.pyplot(fig)
+st.pyplot(fig_voorspel)
 
