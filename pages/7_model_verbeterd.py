@@ -322,6 +322,7 @@ elif optie == "Visualisaties":
     plt.close(fig5)
     with st.expander("Zie oude grafiek"):
         st.write("Hier wordt de oude grafiek getoond")
+        st.image("https://raw.githubusercontent.com/donny008813/vluchten/main/HeleDataframe.PNG")
 
 elif optie == "Modelanalyse":
     st.header("Modelresultaten")
