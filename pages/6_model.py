@@ -177,7 +177,7 @@ st.pyplot(fig4) # Top 10 Maatschappij
 plt.close(fig4)
 
 # Dropdown menu voor selectie van vliegtuigmaatschappij
-maatschappij_selectie = st.selectbox('Selecteer een vliegtuigmaatschappij', df['maatschappij'].unique())
+maatschappij_selectie = st.selectbox('Selecteer een vliegtuigmaatschappij', vluchten_copy['maatschappij'].unique())
 
 # Filter DataFrame op geselecteerde vliegtuigmaatschappij
 df_geselecteerd = vluchten_copy[vluchten_copy['maatschappij'] == maatschappij_selectie]
