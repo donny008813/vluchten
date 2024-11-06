@@ -258,7 +258,7 @@ optie = st.sidebar.radio(
 if optie == "Dataset Overzicht":
     st.header("Overzicht van de Dataset")
     vluchten = load_data()
-    st.write("Hier worden de gegevens getoond die beschikbaar zijn gesteld voor deze opdracht. Bij de uitgebreide dataset worden de extra features die hieruit zijn opgesteld")
+    st.write("Hier worden de gegevens getoond die beschikbaar zijn gesteld voor deze opdracht. Bij de uitgebreide dataset worden de extra features ook getoond die uit de originele dataset zijn opgesteld")
     st.dataframe(vluchten)
     st.subheader('Overzicht van uitgebreide Dataset')
     st.dataframe(vluchten_copy)
@@ -342,11 +342,17 @@ elif optie == "Modelanalyse":
     st.header("Modelresultaten")
     st.markdown('''
     De scores van het nieuwe model en het oude model worden hier getoond. De variabelen die in het oude model zijn gebruikt:
+    
     - Dag van de maand
+    
     - Vliegtuigmaatschappij  
-Voor het nieuwe model zijn de volgende variabelen toegevoegd:
+    
+    Voor het nieuwe model zijn de volgende variabelen toegevoegd:
+    
     - Dag van de week
+    
     - Seizoen
+    
     - Uur van vertrek
     ''')
     col1, col2 = st.columns(2)
