@@ -158,15 +158,18 @@ ax5.tick_params(axis='x', rotation=45)
 ax5.xaxis.set_major_locator(mdates.YearLocator())  # Set major ticks for each year
 plt.tight_layout()
 
-# Plotten van het aantal vertraagde en niet-vertraagde vluchten per type vliegtuig
-fig_vlieg, ax_vlieg = plt.subplots()
-sns.countplot(data=vluchten_copy, x='ACT', hue='vertraagd', order=vluchten_copy['ACT'].value_counts().index, ax=ax_vlieg)
+# Aantal vertraagd per type vliegtuig
+vertraagd_type_vliegtuig = vluchten_copy.groupby(['ACT', 'vertraagd']).size().unstack(fill_value=0)
 
-ax_vlieg.set_title('Aantal vluchten vertraagd en niet-vertraagd per type vliegtuig')
-ax_vlieg.set_xlabel('Type vliegtuig (ACT)')
-ax_vlieg.set_ylabel('Aantal vluchten')
-plt.xticks(rotation=90)  # Draai de labels als er veel types zijn
-plt.tight_layout()  # Zorg ervoor dat de layout past
+fig_type_vliegtuig, ax_type_vliegtuig = plt.subplots()
+vertraagd_type_vliegtuig.plot(kind='bar', ax=ax_type_vliegtuig, color=['lightgreen', 'lightcoral'])
+ax_type_vliegtuig.set_title('Totaal aantal Vluchten per Type Vliegtuig')
+ax_type_vliegtuig.set_ylabel('Aantal Vluchten')
+ax_type_vliegtuig.set_xlabel('Type Vliegtuig')
+ax_type_vliegtuig.set_xticklabels(vertraagd_type_vliegtuig.index, rotation=90)  # Labels voor de typen vliegtuigen
+ax_type_vliegtuig.legend(['Niet Vertraagd', 'Vertraagd'])
+
+plt.tight_layout()  # Zorg ervoor dat alles netjes past
 
 # Weergave in Streamlit
 st.title('Vluchten Analyse')
@@ -221,8 +224,8 @@ ax_maat_maand.legend(['Niet Vertraagd', 'Vertraagd'])
 st.pyplot(fig_maat_maand)
 plt.close(fig_maat_maand)
 
-st.pyplot(fig_vlieg)
-plt.close(fig_vlieg)
+st.pyplot(fig_type_vliegtuig)
+plt.close(fig_type_vliegtuig)
 
 st.pyplot(fig5) # Hele dataframe
 plt.close(fig5)
