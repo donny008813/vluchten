@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 import sklearn.linear_model as lm
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
 from sklearn.model_selection import train_test_split
 import matplotlib.dates as mdates
 
@@ -244,6 +245,8 @@ pred = logmodel.predict(X_test)
 test_data_acc = accuracy_score(y_test, pred)
 #st.write('Accuracy score of test data:', test_data_acc)
 
+precision = precision_score(y_test, pred)
+
 # Data laden
 st.title("Vluchten Analyse Dashboard")
 st.sidebar.header("Navigatie")
@@ -324,5 +327,7 @@ elif optie == "Modelanalyse":
     # Training en test accuracies weergeven
     st.metric("Training Accuracy", f"{training_data_acc:.2%}")
     st.metric("Test Accuracy", f"{test_data_acc:.2%}")
+    st.write("Precision van het model:")
+    st.metric("Test Precision", f"{precision:.2%}")
 
 st.sidebar.info("Gebruik de navigatie om door de verschillende secties te bladeren.")
