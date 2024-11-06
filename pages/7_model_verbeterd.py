@@ -357,11 +357,15 @@ elif optie == "Modelanalyse":
     ''')
     col1, col2 = st.columns(2)
     with col1:
-            st.write("Accuracy van het nieuwe model:")
-            # Training en test accuracies weergeven
-            st.metric("Training Accuracy", f"{training_data_acc:.2%}")
-            st.metric("Test Accuracy", f"{test_data_acc:.2%}")
-            st.write("Precision van het nieuwe model:")
-            st.metric("Test Precision", f"{precision:.2%}")
+        st.write("Accuracy van het nieuwe model:")
+        # Training en test accuracies weergeven
+        st.metric("Training Accuracy", f"{training_data_acc:.2%}")
+        st.metric("Test Accuracy", f"{test_data_acc:.2%}")
+        st.write("Precision van het nieuwe model:")
+        st.metric("Test Precision", f"{precision:.2%}")
+    with col2:
+        st.write("Accuracy van het oude model:")
+        st.metric("Training Accuracy", f"{0.6511734725424208:.2%}")
+        st.metric("Test Accuracy", f"{0.6508517194117829:.2%}")
 
 st.sidebar.info("Gebruik de navigatie om door de verschillende secties te bladeren.")
