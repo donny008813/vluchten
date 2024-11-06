@@ -280,7 +280,7 @@ model_data = pd.concat([model_data, uur_van_vertrek], axis=1)
 # Onnodige kolommen verwijderen
 model_data = model_data.drop(['STD', 'FLT', 'STA_STD_ltc', 'ATA_ATD_ltc', 'TAR', 'GAT', 'DL1', 'IX1', 'DL2', 'IX2',
                               'ACT', 'RWY', 'RWC', 'Identifier', 'verschil', 'dag', 'maatschappij', 'maand', 'LSV',
-                              'Org/Des'], axis=1)
+                              'Org/Des', 'Fabrikant'], axis=1)
 
 # Modeldata voorbereiden
 X = model_data.drop('vertraagd', axis=1)
