@@ -344,7 +344,7 @@ elif optie == "Modelanalyse":
     De scores van het nieuwe model en het oude model worden hier getoond. De variabelen die in het oude model zijn gebruikt:
     - Dag van de maand
     - Vliegtuigmaatschappij  
-    Voor het nieuwe model zijn de volgende variabelen toegevoegd:
+Voor het nieuwe model zijn de volgende variabelen toegevoegd:
     - Dag van de week
     - Seizoen
     - Uur van vertrek
