@@ -341,16 +341,21 @@ elif optie == "Visualisaties":
 elif optie == "Modelanalyse":
     st.header("Modelresultaten")
     st.markdown('''
-    De scores van het nieuwe model en het oude model worden hier getoond. Voor het nieuwe model zijn de volgende variabelen toegevoegd:
+    De scores van het nieuwe model en het oude model worden hier getoond. De variabelen die in het oude model zijn gebruikt:
+    - Dag van de maand
+    - Vliegtuigmaatschappij
+    Voor het nieuwe model zijn de volgende variabelen toegevoegd:
     - Dag van de week
     - Seizoen
     - Uur van vertrek
     ''')
-    st.write("Accuracy van het model:")
-    # Training en test accuracies weergeven
-    st.metric("Training Accuracy", f"{training_data_acc:.2%}")
-    st.metric("Test Accuracy", f"{test_data_acc:.2%}")
-    st.write("Precision van het model:")
-    st.metric("Test Precision", f"{precision:.2%}")
+    col1, col2 = st.columns(2)
+    with col1:
+            st.write("Accuracy van het nieuwe model:")
+            # Training en test accuracies weergeven
+            st.metric("Training Accuracy", f"{training_data_acc:.2%}")
+            st.metric("Test Accuracy", f"{test_data_acc:.2%}")
+            st.write("Precision van het nieuwe model:")
+            st.metric("Test Precision", f"{precision:.2%}")
 
 st.sidebar.info("Gebruik de navigatie om door de verschillende secties te bladeren.")
