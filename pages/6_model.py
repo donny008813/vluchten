@@ -196,7 +196,7 @@ maatschappij_selectie = st.selectbox('Selecteer een vliegtuigmaatschappij', vluc
 df_geselecteerd = vluchten_copy[vluchten_copy['maatschappij'] == maatschappij_selectie]
 
 # Totaal aantal vertraagde en niet-vertraagde vluchten voor de geselecteerde maatschappij per maand
-totaal_vertraagd_per_maat = df_geselecteerd.groupby(['vertraagd']).size().unstack(fill_value=0)
+totaal_vertraagd_per_maat = df_geselecteerd.groupby(['vertraagd']).size()
 totaal_vertraagd_per_maand = df_geselecteerd.groupby(['maand', 'vertraagd']).size().unstack(fill_value=0)
 
 # Plotten
