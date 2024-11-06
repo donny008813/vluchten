@@ -24,6 +24,7 @@ vluchten_copy = vluchten.copy()
 # Verwerken van tijdstippen
 vluchten_copy['STA_STD_ltc'] = pd.to_datetime(vluchten_copy['STA_STD_ltc'], format='%H:%M:%S').dt.time
 vluchten_copy['ATA_ATD_ltc'] = pd.to_datetime(vluchten_copy['ATA_ATD_ltc'], format='%H:%M:%S').dt.time
+vluchten_copy['STD'] = pd.to_datetime(vluchten_copy['STD'], format='%d/%m/%Y')
 
 vluchten_copy = vluchten_copy[vluchten_copy['STD'] < '2020-02-01']
 
