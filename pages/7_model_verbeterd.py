@@ -25,6 +25,8 @@ vluchten_copy = vluchten.copy()
 vluchten_copy['STA_STD_ltc'] = pd.to_datetime(vluchten_copy['STA_STD_ltc'], format='%H:%M:%S').dt.time
 vluchten_copy['ATA_ATD_ltc'] = pd.to_datetime(vluchten_copy['ATA_ATD_ltc'], format='%H:%M:%S').dt.time
 
+vluchten_copy = vluchten_copy[vluchten_copy['STD'] < '2020-02-01']
+
 # Functie om tijd naar seconden om te zetten
 def time_to_seconds(time_obj):
     return time_obj.hour * 3600 + time_obj.minute * 60 + time_obj.second
@@ -356,14 +358,14 @@ elif optie == "Modelanalyse":
     - Uur van vertrek
     ''')
     col1, col2 = st.columns(2)
-    with col1:
+    with col2:
         st.write("Accuracy van het nieuwe model:")
         # Training en test accuracies weergeven
         st.metric("Training Accuracy", f"{training_data_acc:.2%}")
         st.metric("Test Accuracy", f"{test_data_acc:.2%}")
         st.write("Precision van het nieuwe model:")
         st.metric("Test Precision", f"{precision:.2%}")
-    with col2:
+    with col1:
         st.write("Accuracy van het oude model:")
         st.metric("Training Accuracy", f"{0.6511734725424208:.2%}")
         st.metric("Test Accuracy", f"{0.6508517194117829:.2%}")
