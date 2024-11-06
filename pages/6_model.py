@@ -139,7 +139,7 @@ flight_counts = vluchten_copy['maatschappij'].value_counts().nlargest(10).index
 top_10_df = vluchten_copy[vluchten_copy['maatschappij'].isin(flight_counts)]
 
 fig4, ax4 = plt.subplots()
-sns.countplot(data=top_10_df, x='maatschappij', hue='vertraagd', color=['lightcoral', 'lightgreen'])
+sns.countplot(data=top_10_df, x='maatschappij', hue='vertraagd')
 ax4.set_title('Count of Delays and Non-Delays per Airline')
 ax4.set_ylabel('Count')
 ax4.set_xlabel('Airline')
@@ -149,7 +149,7 @@ delayed_counts = vluchten_copy.groupby('STD')['vertraagd'].sum().reset_index()
 
 fig5, ax5 = plt.subplots()
 
-sns.barplot(x='STD', y='vertraagd', data=delayed_counts, color=['lightcoral', 'lightgreen'])
+sns.barplot(x='STD', y='vertraagd', data=delayed_counts)
 
 ax5.set_title('Number of Delayed Flights per Day')
 ax5.set_xlabel('Date')
