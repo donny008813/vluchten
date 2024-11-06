@@ -158,6 +158,16 @@ ax5.tick_params(axis='x', rotation=45)
 ax5.xaxis.set_major_locator(mdates.YearLocator())  # Set major ticks for each year
 plt.tight_layout()
 
+# Plotten van het aantal vertraagde en niet-vertraagde vluchten per type vliegtuig
+fig_vlieg, ax_vlieg = plt.subplots()
+sns.countplot(data=vluchten_copy, x='ACT', hue='vertraagd', order=vluchten_copy['ACT'].value_counts().index, ax=ax_vlieg)
+
+ax_vlieg.set_title('Aantal vluchten vertraagd en niet-vertraagd per type vliegtuig')
+ax_vlieg.set_xlabel('Type vliegtuig (ACT)')
+ax_vlieg.set_ylabel('Aantal vluchten')
+plt.xticks(rotation=90)  # Draai de labels als er veel types zijn
+plt.tight_layout()  # Zorg ervoor dat de layout past
+
 # Weergave in Streamlit
 st.title('Vluchten Analyse')
 st.write(vluchten_copy)
@@ -183,13 +193,14 @@ maatschappij_selectie = st.selectbox('Selecteer een vliegtuigmaatschappij', vluc
 df_geselecteerd = vluchten_copy[vluchten_copy['maatschappij'] == maatschappij_selectie]
 
 # Totaal aantal vertraagde en niet-vertraagde vluchten voor de geselecteerde maatschappij per maand
-totaal_vertraagd_per_maand = df_geselecteerd.groupby(['vertraagd']).size().unstack(fill_value=0)
+totaal_vertraagd_per_maat = df_geselecteerd.groupby(['vertraagd']).size().unstack(fill_value=0)
+totaal_vertraagd_per_maand = df_geselecteerd.groupby(['maand', 'vertraagd']).size().unstack(fill_value=0)
 
 # Plotten
 st.subheader(f'Totaal aantal Vluchten voor {maatschappij_selectie}: Vertraagd vs Niet-Vertraagd')
 
 fig_maat, ax_maat = plt.subplots()
-totaal_vertraagd_per_maand.plot(kind='bar', ax=ax_maat, color=['lightcoral', 'lightgreen'])
+totaal_vertraagd_per_maat.plot(kind='bar', ax=ax_maat, color=['lightcoral', 'lightgreen'])
 ax_maat.set_title(f'Totaal aantal Vluchten voor {maatschappij_selectie}')
 ax_maat.set_ylabel('Aantal Vluchten')
 ax_maat.set_xlabel('Status')
@@ -198,6 +209,20 @@ ax_maat.set_xticklabels(['Niet Vertraagd', 'Vertraagd'], rotation=0)
 ax_maat.legend(['Aantal Vluchten'])
 st.pyplot(fig_maat)
 plt.close(fig_maat)
+
+fig_maat_maand, ax_maat_maand = plt.subplots()
+totaal_vertraagd_per_maand.plot(kind='bar', ax=ax_maat_maand, color=['lightcoral', 'lightgreen'])
+ax_maat_maand.set_title(f'Totaal aantal Vluchten voor {maatschappij_selectie} per Maand van het Jaar')
+ax_maat_maand.set_ylabel('Aantal Vluchten')
+ax_maat_maand.set_xlabel('Maand')
+ax_maat_maand.set_xticks(range(0, 12))
+ax_maat_maand.set_xticklabels(['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'], rotation=45)
+ax_maat_maand.legend(['Niet Vertraagd', 'Vertraagd'])
+st.pyplot(fig_maat_maand)
+plt.close(fig_maat_maand)
+
+st.pyplot(fig_vlieg)
+plt.close(fig_vlieg)
 
 st.pyplot(fig5) # Hele dataframe
 plt.close(fig5)
