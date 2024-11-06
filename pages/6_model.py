@@ -132,6 +132,32 @@ ax_dagen.set_xlabel('Dag van de week')
 ax_dagen.set_xticklabels(['Ma', 'Di', 'Wo', 'Do', 'Vrij', 'Za', 'Zo'], rotation=0)
 ax_dagen.legend(['Niet Vertraagd', 'Vertraagd'])
 
+# Hist vertraagd maatschappij
+flight_counts = vluchten_copy['maatschappij'].value_counts().nlargest(10).index
+
+# Filtering DataFrame for top 10 airlines
+top_10_df = vluchten_copy[vluchten_copy['maatschappij'].isin(flight_counts)]
+
+fig4, ax4 = plt.subplots()
+sns.countplot(data=top_10_df, x='maatschappij', hue='vertraagd')
+ax4.set_title('Count of Delays and Non-Delays per Airline')
+ax4.set_ylabel('Count')
+ax4.set_xlabel('Airline')
+
+# Group by date and count the number of delayed flights
+delayed_counts = vluchten_copy.groupby('STD')['vertraagd'].sum().reset_index()
+
+fig5, ax5 = plt.subplots()
+
+sns.barplot(x='STD', y='vertraagd', data=delayed_counts, color='lightblue')
+
+ax5.set_title('Number of Delayed Flights per Day')
+ax5.set_xlabel('Date')
+ax5.set_ylabel('Number of Delayed Flights')
+ax5.tick_params(axis='x', rotation=45)
+ax5.xaxis.set_major_locator(mdates.YearLocator())  # Set major ticks for each year
+plt.tight_layout()
+
 # Weergave in Streamlit
 st.title('Vluchten Analyse')
 st.write(vluchten_copy)
@@ -147,6 +173,10 @@ st.pyplot(fig_dagen)
 plt.close(fig_dagen)
 st.pyplot(fig_uur)
 plt.close(fig_uur)
+st.pyplot(fig4) # Top 10 Maatschappij
+plt.close(fig4)
+st.pyplot(fig5) # Hele dataframe
+plt.close(fig5)
 
 ########################################################################################################### Model
 # One-hot encoding voor categorische variabelen
